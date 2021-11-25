@@ -79,15 +79,19 @@ class AdminService extends Service {
             const { Name, Street, City, State, ZipCode, Kind, Password, MarriageStatus, Gender, Age, Income } = data;
             const res_c = await this.app.mysql.query('insert into customers (Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?)', [Name, Street, City, State, ZipCode, Kind, md5(Password)]);
             console.log('[DB][service.admin.insert]', res_c);
-            const res_h = await this.app.mysql.query('insert into homecustomer (CustomerID, Name, MarriageStatus, Gender, Age, Income) value(?,?,?,?,?,?)', [CustomerID, Name, MarriageStatus, Gender, Age, Income]);
-            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, MarriageStatus, Gender, Age, Income })}, result: ${JSON.stringify(res_h)}`);
-            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
+            const cid = await this.app.mysql.query('select max(CustomerID) as cid from customers');
+            console.log(`[DB][service.admin.insert], ${JSON.stringify(cid)}`);
+            const res_h = await this.app.mysql.query('insert into homecustomer (CustomerID, Name, MarriageStatus, Gender, Age, Income) value(?,?,?,?,?,?)', [cid[0].cid, Name, MarriageStatus, Gender, Age, Income]);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, MarriageStatus, Gender, Age, Income })}, result: ${JSON.stringify(res_h)}`);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
         } else if (Kind == 'Business') {
-            const { CustomerID, Name, Street, City, State, ZipCode, Kind, Password, BusinessCategory, GrossAnnualIncome } = data;
+            const { Name, Street, City, State, ZipCode, Kind, Password, BusinessCategory, GrossAnnualIncome } = data;
+            const res_c = await this.app.mysql.query('insert into customers (Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?)', [Name, Street, City, State, ZipCode, Kind, md5(Password)]);
+            console.log('[DB][service.admin.insert]', res_c);
+            //const { CustomerID } = res_c;
             const res_b = await this.app.mysql.query('insert into businesscustomer (CustomerID, Name, BusinessCategory, GrossAnnualIncome) value(?,?,?,?)', [CustomerID, Name, BusinessCategory, GrossAnnualIncome]);
-            const res_c = await this.app.mysql.query('insert into customers (CustomerID, Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?,?)', [CustomerID, Name, Street, City, State, ZipCode, Kind, Password]);
-            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, BusinessCategory, GrossAnnualIncome })}, result: ${JSON.stringify(res_b)}`);
-            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, BusinessCategory, GrossAnnualIncome })}, result: ${JSON.stringify(res_b)}`);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
         } else {
             return {
                 success: false,
@@ -96,7 +100,7 @@ class AdminService extends Service {
             };
         }
 
-        if (!res || !res_c || !res_b) {
+        if (!res_c || !res_h || !res_b) {
             return {
                 success: false,
                 errno: 1002,
@@ -104,6 +108,19 @@ class AdminService extends Service {
             };
         }
         return { success: true, ...res };
+    }
+
+    async delete(data) {
+        const { CustomerID } = data;
+        const res = await this.app.mysql.query('delete from customers where customerID = ?', [CustomerID]);
+        if (!res) {
+            return {
+                success: false,
+                errno: 1020,
+                msg: 'fail to delete'
+            };
+        }
+        return { success: true };
     }
 
     /**

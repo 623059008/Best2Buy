@@ -33,6 +33,12 @@ class AdminController extends Controller {
         ctx.cookies.set('user-cookie', uuidv4());
         return (ctx.body = {...data });
     }
+
+    async deleteUsr() {
+        const { ctx } = this;
+        const data = await ctx.service.admin.delete(ctx.request.body);
+        return (ctx.body = {...data });
+    }
 }
 
 module.exports = AdminController;
