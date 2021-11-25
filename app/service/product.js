@@ -36,7 +36,7 @@ class ProductService extends Service {
         // select user info from product by username and password
         let sql = 'select * from products where';
         if (filter.ProductKind) {
-            sql += ' ProductKind=\'' + filter.ProductKind + '\' and';
+            sql += ' ProductKind like \'%' + filter.ProductKind + '%\' and';
         }
         if (filter.Keyword) {
             sql += ' Name like \'%' + filter.Keyword + '%\' and';
@@ -59,10 +59,9 @@ class ProductService extends Service {
         } else {
             sql = sql.substr(0, sql.length - 4);
         }
-        console.log(`[service.product.query] DB: ${JSON.stringify(filter)} ${sql}`);
         const product = await this.app.mysql.query(sql);
 
-        //console.log(`[service.product.find] DB: ${uid} ${email}, ${realname}, ${birthday} result: ${JSON.stringify(product)}`);
+        console.log(`[service.product.find] DB: ${JSON.stringify(filter)} ${sql} result: ${JSON.stringify(product)}`);
         if (!product) {
             return {
                 success: false,

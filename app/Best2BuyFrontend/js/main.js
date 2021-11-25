@@ -97,8 +97,12 @@ function queryAllProduct(filter={}) {
 }
 
 function queryProduct() {
-    location.href = '/products?filter={Name:'+ value +'}';
-    // const value = $("#product-keyword").val();
+    const value = $("#product-keyword").val();
+    const data = {
+        Name: value,
+    };
+    Cookies.set('product_filter', JSON.stringify(data));
+    location.href = '/products.html';
     // console.log('[*]', value);
     // const url = getUrl('queryProduct');
     // return request(url, {

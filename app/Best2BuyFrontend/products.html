@@ -102,12 +102,22 @@
 			<div class="container product-filter-container">
 				<h3>Filters</h3>
 				<div class="product-filter">
-					<input type="text" id="filter_name" value="" placeholder="search by fuzzy name" />
-					<input type="text" id="filter_kind" value="" placeholder="search by kind" />
-					<input type="text" id="filter_min_price" value="" placeholder="min price" />
-					<input type="text" id="filter_max_price" value="" placeholder="max price" />
-					<button id="apply_filter" type="button">Apply</button>
-					<button id="cancel_filter" type="button">Cancel</button>
+					<div class="row">
+						<input type="text" id="filter_name" value="" placeholder="search by fuzzy name" />
+						<input type="text" id="filter_kind" value="" placeholder="search by kind" />
+					</div>
+					<div class="row">
+						<input type="text" id="filter_min_price" value="" placeholder="min price" />
+						<input type="text" id="filter_max_price" value="" placeholder="max price" />
+					</div>
+					<div class="row">
+						<label for="soldout"> Sold Out</label>
+						<input type="checkbox" id="soldout" name="soldout" value="True">
+					</div>
+					<div class="row">
+						<button class="hvr-float-shadow" id="apply_filter" type="button">Apply</button>
+						<button class="hvr-float-shadow" id="cancel_filter" type="button">Cancel</button>
+					</div>
 				</div>
 			</div>
 			<!-- Products V 1 _________________________________ -->
@@ -238,7 +248,6 @@
 								<span class=".titleanimi"></span>
 							</div>
 							<div class="case-item-description">
-								
 								<h4><a href="case-studies-details.html?id=${item['ProductID']}">${item['Name']}</a></h4>
 								<h3>$${item['Price']}</h3>
 								<h6>${item['ProductKind']}</h6>
@@ -264,21 +273,32 @@
 		}
 		$(document).ready(()=>{
 			$('#apply_filter').click(()=>{
-				const Name = $('#filter_name').val();
-				const Kind = $('#filter_kind').val();
+				const Keyword = $('#filter_name').val();
+				const ProductKind = $('#filter_kind').val();
 				const MinPrice = $('#filter_min_price').val();
 				const MaxPrice = $('#filter_max_price').val();
+				const SoldOut = $('#soldout').is(':checked');
 				if (MinPrice!=='' && isNaN(parseInt(MinPrice)) || MaxPrice!=='' && isNaN(parseInt(MaxPrice))) {
 					showModal('Info', 'Must input valid price', 'Got it');
 					return ;
 				}
-				console.log(Name, Kind, MinPrice, MaxPrice);
-				if(MinPrice!=='' || Name!=='' || MaxPrice!=='' || Kind!=='') {
-					queryAllProduct({Name, MaxPrice, MinPrice, Kind}).then(res => {
+				console.log(Keyword, ProductKind, MinPrice, MaxPrice, SoldOut);
+				if(MinPrice!=='' || Keyword!=='' || MaxPrice!=='' || ProductKind!=='' || SoldOut) {
+					queryAllProduct({Keyword, MaxPrice, MinPrice, ProductKind, SoldOut}).then(res => {
 						updateProducts(res.data);
 					});
 				}
 			});
+			$('#cancel_filter').click(()=>{
+				$('#filter_name').val('');
+				$('#filter_kind').val('');
+				$('#filter_min_price').val('');
+				$('#filter_max_price').val('');
+				$('#soldout').attr('checked', false);
+				queryAllProduct().then(res => {
+					updateProducts(res.data);
+				});
+			})
 			
 
 			queryAllProduct().then(res=>{
