@@ -1,5 +1,6 @@
 /* eslint-disable */
-const baseUrl = 'http://192.168.3.21:7001/';
+// const baseUrl = 'http://192.168.3.21:7001/';
+const baseUrl = '/';
 const infoText = {
     'networkError':'Services are not available, please try it again',
     'loginError': 'Username and Password are required!',

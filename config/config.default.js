@@ -1,6 +1,7 @@
 /* eslint valid-jsdoc: "off" */
 
 'use strict';
+const path = require('path');
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -20,7 +21,7 @@ module.exports = appInfo => {
         // username
         user: 'root',
         // password
-        password: 'Yangxin1994',
+        password: '',
         // database
         database: 'best2buy',
       },
@@ -40,6 +41,11 @@ module.exports = appInfo => {
       // match: [ ctx => ctx.path.startsWith('/api'), /^\/foo$/, '/bar'], // support Array
     },
   };
+
+  config.static = {
+    prefix: '/',
+    dir: path.join(appInfo.baseDir, 'app/Best2BuyFrontend'),
+  }
 
   config.cors = {
     origin: '*',
