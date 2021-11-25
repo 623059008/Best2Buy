@@ -10,13 +10,13 @@ function md5(text) {
     return crypto.createHash('md5').update(text).digest('hex');
 }
 
-class AdaminService extends Service {
+class AdminService extends Service {
     async find(data) {
-        const { customerID } = data;
+        const { CustomerID } = data;
         // select user info from admin by username and password
-        let admin;
-        if (customerID) {
-            admin = await this.app.mysql.query('select * from admin where customerID = ?', [customerID]);
+        let usr;
+        if (CustomerID) {
+            usr = await this.app.mysql.query('select * from customers where CustomerID = ?', [CustomerID]);
         } else {
             return {
                 success: false,
@@ -25,8 +25,8 @@ class AdaminService extends Service {
             };
         }
 
-        console.log(`[service.admin.find] DB: ${uid} ${email}, ${realname}, ${birthday} result: ${JSON.stringify(admin)}`);
-        if (!admin || admin.length == 0) {
+        //console.log(`[service.admin.find] DB: ${uid} ${email}, ${realname}, ${birthday} result: ${JSON.stringify(admin)}`);
+        if (!usr || usr.length == 0) {
             return {
                 success: false,
                 errno: 1001,
@@ -34,17 +34,17 @@ class AdaminService extends Service {
             };
         }
         return {
-            ...admin[0],
+            ...usr[0],
             success: true,
         };
     }
 
     async signin(data) {
-        const { password, name } = data;
+        const { Password, Name } = data;
         // select user info from admin by username and password
-        let admin;
-        if (password && name) {
-            admin = await this.app.mysql.query('select * from customer where password = ? && name = ?', [password, name]);
+        let usr;
+        if (Password && Name) {
+            usr = await this.app.mysql.query('select * from customers where Password = ? && Name = ?', [Password, Name]);
         } else {
             return {
                 success: false,
@@ -53,8 +53,8 @@ class AdaminService extends Service {
             };
         }
 
-        console.log(`[service.admin.find] DB: ${uid} ${email}, ${realname}, ${birthday} result: ${JSON.stringify(admin)}`);
-        if (!admin) {
+        console.log(`[service.admin.signin] DB: ${Name} result: ${JSON.stringify(usr)}`);
+        if (usr.length < 1) {
             return {
                 success: false,
                 errno: 1001,
@@ -62,7 +62,7 @@ class AdaminService extends Service {
             };
         }
         return {
-            ...admin,
+            data: {...usr[0] },
             success: true,
         };
     }
@@ -73,16 +73,21 @@ class AdaminService extends Service {
      */
     async insert(data) {
         // create a new admin
-        const { kind } = data;
+        const { Kind } = data;
 
-        if (kind == 'home') {
-            const { customerID, name, address, marriageStatus, gender, age, income } = data;
-            const res = await this.app.mysql.query('insert into admin (customerID, name, address, marriageStatus, gender, age, income) value(?,?,?,?,?,?,?)', [customerID, name, address, marriageStatus, gender, age, income]);
-            console.log(`[service.admin.insert] DB: ${JSON.stringify({ customerID, name, address, marriageStatus, gender, age, income })}, result: ${JSON.stringify(res)}`);
-        } else if (kind == 'business') {
-            const { customerID, name, address, category, GAincome } = data;
-            const res = await this.app.mysql.query('insert into admin (customerID, name, address, category, GAincome) value(?,?,?,?,?)', [customerID, name, address, category, GAincome]);
-            console.log(`[service.admin.insert] DB: ${JSON.stringify({ customerID, name, address, category, GAincome })}, result: ${JSON.stringify(res)}`);
+        if (Kind == 'Home') {
+            const { Name, Street, City, State, ZipCode, Kind, Password, MarriageStatus, Gender, Age, Income } = data;
+            const res_c = await this.app.mysql.query('insert into customers (Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?)', [Name, Street, City, State, ZipCode, Kind, md5(Password)]);
+            console.log('[DB][service.admin.insert]', res_c);
+            const res_h = await this.app.mysql.query('insert into homecustomer (CustomerID, Name, MarriageStatus, Gender, Age, Income) value(?,?,?,?,?,?)', [CustomerID, Name, MarriageStatus, Gender, Age, Income]);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, MarriageStatus, Gender, Age, Income })}, result: ${JSON.stringify(res_h)}`);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
+        } else if (Kind == 'Business') {
+            const { CustomerID, Name, Street, City, State, ZipCode, Kind, Password, BusinessCategory, GrossAnnualIncome } = data;
+            const res_b = await this.app.mysql.query('insert into businesscustomer (CustomerID, Name, BusinessCategory, GrossAnnualIncome) value(?,?,?,?)', [CustomerID, Name, BusinessCategory, GrossAnnualIncome]);
+            const res_c = await this.app.mysql.query('insert into customers (CustomerID, Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?,?)', [CustomerID, Name, Street, City, State, ZipCode, Kind, Password]);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, BusinessCategory, GrossAnnualIncome })}, result: ${JSON.stringify(res_b)}`);
+            console.log(`[service.admin.insert] DB: ${JSON.stringify({ CustomerID, Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
         } else {
             return {
                 success: false,
@@ -91,7 +96,7 @@ class AdaminService extends Service {
             };
         }
 
-        if (!res) {
+        if (!res || !res_c || !res_b) {
             return {
                 success: false,
                 errno: 1002,
@@ -107,7 +112,7 @@ class AdaminService extends Service {
      */
     async update(data) {
         // update admin info
-        const { customerID: cid, kind } = data;
+        const { CustomerID: cid, Kind } = data;
         const admin = await this.find(cid);
         if (!admin || !admin.success) {
             return {
@@ -116,21 +121,33 @@ class AdaminService extends Service {
                 msg: 'fail to update'
             };
         }
-        if (kind == 'home') {
-            const { name, address, marriageStatus, gender, age, income } = admin;
-            const res = await this.app.mysql.update('admin', {
-                name: data.name || name,
-                address: data.address || address,
-                marriageStatus: data.marriageStatus || marriageStatus,
-                gender: data.gender || gender,
-                age: data.age || age,
-                income: data.income || income
+        if (Kind == 'Home') {
+            const { Name, Street, City, State, ZipCode, Kind, Password, MarriageStatus, Gender, Age, Income } = usr;
+            const res_c = await this.app.mysql.update('customers', {
+                Name: data.Name || Name,
+                Street: data.Street || Street,
+                City: data.City || City,
+                State: data.State || State,
+                ZipCode: data.ZipCode || ZipCode,
+                Kind: data.Kind || Kind,
+                Password: data.Password || Password,
             }, {
                 where: {
-                    customerID: data.customerID
+                    CustomerID: data.CustomerID
                 }
             })
-            if (!res) {
+            const res_h = await this.app.mysql.update('homecustomer', {
+                Name: data.Name || Name,
+                MarriageStatus: data.MarriageStatus || MarriageStatus,
+                Gender: data.Gender || Gender,
+                Age: data.Age || Age,
+                Income: data.Income || Income
+            }, {
+                where: {
+                    CustomerID: data.CustomerID
+                }
+            })
+            if (!res_c || !res_h) {
                 return {
                     success: false,
                     errno: 1003,
@@ -138,18 +155,30 @@ class AdaminService extends Service {
                 };
             }
         } else {
-            const { name, address, category, GAincome } = admin;
-            const res = await this.app.mysql.update('admin', {
-                name: data.name || name,
-                address: data.address || address,
-                category: data.category || category,
-                GAincome: data.GAincome || GAincome
+            const { Name, Street, City, State, ZipCode, Kind, Password, BusinessCategory, GrossAnnualIncome } = usr;
+            const res_b = await this.app.mysql.update('businesscustomer', {
+                Name: data.Name || Name,
+                BusinessCategory: data.BusinessCategory || BusinessCategory,
+                GrossAnnualIncome: data.GrossAnnualIncome || GrossAnnualIncome
             }, {
                 where: {
-                    customerID: data.customerID
+                    CustomerID: data.CustomerID
                 }
             })
-            if (!res) {
+            const res_c = await this.app.mysql.update('customers', {
+                Name: data.Name || Name,
+                Street: data.Street || Street,
+                City: data.City || City,
+                State: data.State || State,
+                ZipCode: data.ZipCode || ZipCode,
+                Kind: data.Kind || Kind,
+                Password: data.Password || Password,
+            }, {
+                where: {
+                    CustomerID: data.CustomerID
+                }
+            })
+            if (!res_b || !res_c) {
                 return {
                     success: false,
                     errno: 1003,
@@ -161,4 +190,4 @@ class AdaminService extends Service {
     }
 }
 
-module.exports = AdaminService;
+module.exports = AdminService;

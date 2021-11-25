@@ -6,8 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 class AdminController extends Controller {
     async findAdmin() {
         const { ctx } = this;
-        const { customerID } = ctx.request.body;
-        const data = await ctx.service.admin.find({ customerID });
+        const { CustomerID } = ctx.request.body;
+        const data = await ctx.service.admin.find({ CustomerID });
         console.log(`[controller.admin.index] ${JSON.stringify(data)}`);
         ctx.cookies.set('user-cookie', uuidv4());
         return (ctx.body = {...data });
@@ -16,24 +16,19 @@ class AdminController extends Controller {
     async signin() {
         const { ctx } = this;
 
-        const { password, name } = ctx.request.body;
-        if (!password || !name) {
+        const { Password, Name } = ctx.request.body;
+        if (!Password || !Name) {
             console.log(`[controller.admin.signin] ${JSON.stringify(ctx.request.body)}`);
             return (ctx.body = { message: 'Invalid Parameters' });
         }
-        const data = await ctx.service.admin.signin({ password, name });
+        const data = await ctx.service.admin.signin({ Password, Name });
         console.log(`[controller.admin.signin] ${JSON.stringify(data)}`);
         return (ctx.body = {...data });
     }
 
     async signup() {
         const { ctx } = this;
-        const { birthday, email, realname } = ctx.request.body;
-        if (!birthday || !email || !realname) {
-            console.log(`[controller.admin.signup] ${JSON.stringify(ctx.request.body)}`);
-            return (ctx.body = { message: 'Invalid Parameters' });
-        }
-        const data = await ctx.service.admin.insert({ birthday, email, realname });
+        const data = await ctx.service.admin.insert({...ctx.request.body });
         console.log(`[controller.admin.signup] ${JSON.stringify(data)}`);
         ctx.cookies.set('user-cookie', uuidv4());
         return (ctx.body = {...data });
