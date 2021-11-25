@@ -7,7 +7,7 @@
 		<!-- For IE -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-		<title>Login</title>
+		<title>Product Page</title>
 
 
 		<!-- Favicon -->
@@ -31,7 +31,7 @@
 	
 		<div class="main-page-wrapper">
 
-		<!-- Theme Main Menu ____________________________ -->
+			<!-- Theme Main Menu ____________________________ -->
         <section class="b-seo-menu-wrapper">
             <div class="theme-main-menu">
                 <div class="container">
@@ -40,7 +40,7 @@
                         <div class="float-right search-button-content">
                             <div class="clear-fix">
                                 <!-- /.search-box -->
-                                <!-- <a href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a> -->
+                                <a id='login-buttn' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
                             </div>
                             <!-- /.right-content -->
                         </div>
@@ -82,42 +82,44 @@
             <!-- /.main-menu -->
         </section>
         <!-- /.b-seo-menu-wrapper -->
-
 			<!-- Theme Inner Banner ____________________________ -->
 			<section class="short-theme-banner">
-				<div class="inner-banner-opacity-six">
+				<div class="inner-banner-opacity">
 					<div class="container">
 						<div class="inner-banner-title">
-							<h1>Login Page</h1>
+							<h1>Products</h1>
 							<ul>
 								<li><a href="index.html">Home</a></li>
 								<li><span><i class="fa fa-arrow-right" aria-hidden="true"></i></span></li>
-								<li><a href="#">Login</a></li>
+								<li><a href="#">Products</a></li>
 							</ul>
 						</div> <!-- /.inner-banner-title -->
 					</div> <!-- /.container --> 
 				</div> <!-- /.inner-banner-opact -->
 			</section> <!-- /.them-inner-banner -->
 
-			<!-- Login Page _________________________________ -->
-			<section class="Login-Page">
-				<div class="container">
-					<div class="Login-form">
-						<h2>Login with your customers account</h2>
-						<form action="#">
-							<p>Username <span>*</span></p>
-							<input type="text" id="username">
-							<p>Password <span>*</span></p>
-							<input type="password" id="password">
-							<ul>
-								<li><button onclick="login()" class="a-comon hvr-float-shadow">Login</button></li>
-								<li onclick="showModal('info','Contact our cusomer services: 412-983-9571')">Lost your password?</li>
-								<li><a href="/sign-up.html">Don't have an account? Sign Up</a></li>
-							</ul>
-						</form>
-					</div>
+			<!-- filter -->
+			<div class="container product-filter-container">
+				<h3>Filters</h3>
+				<div class="product-filter">
+					<input type="text" id="filter_name" value="" placeholder="search by fuzzy name" />
+					<input type="text" id="filter_kind" value="" placeholder="search by kind" />
+					<input type="text" id="filter_min_price" value="" placeholder="min price" />
+					<input type="text" id="filter_max_price" value="" placeholder="max price" />
+					<button id="apply_filter" type="button">Apply</button>
+					<button id="cancel_filter" type="button">Cancel</button>
 				</div>
-			</section> <!-- /.Login-Page -->
+			</div>
+			<!-- Products V 1 _________________________________ -->
+			<section id="products" class="Case-Studies">
+				<div class="container">
+					<div class="Case-Studies-wrapper">
+						<div class='row'>
+							<div class="empty-product">There is no products which you want. Try to change filters.</div>
+						</div> <!-- /.row -->
+					</div> <!-- /.Case-Studies-wrapper -->
+				</div> <!-- /.container -->
+			</section> <!-- /.Case-Studies -->
 
 			<!-- Footer ____________________________ -->
 			<footer>
@@ -168,7 +170,7 @@
 						<div class="clear-fix">
 							<p class="float-left">Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
 							<ul class="float-right">
-								<li><a href="#">Case Studies</a></li>
+								<li><a href="#">Products</a></li>
 								<li><a href="#">Privacy Policy</a></li>
 								<li><a href="#">Terms & Condition</a></li>
 								<li><a href="#">Faq</a></li>
@@ -221,6 +223,73 @@
 		<script src="js/jquery.cookie.js"></script>
 		<script src="js/custom.js"></script>
 		<script src="js/main.js"></script>
+		<script type='text/javascript'>
+		function updateProducts(products) {
+			const productHtmlItem = [];
+			products.forEach(item=>{
+				if(item['Name'].length>55) {
+					item['Name'] = item['Name'].substr(0,55) + '...';
+				}
+				productHtmlItem.push(
+					`<div class="col-sm-3 col-xs-6">
+						<div class="Case-Studies-item">
+							<img src="${item["ImgUrl"]}" alt=${item['Name']}>
+							<div class="case-item-opacity">
+								<span class=".titleanimi"></span>
+							</div>
+							<div class="case-item-description">
+								
+								<h4><a href="case-studies-details.html?id=${item['ProductID']}">${item['Name']}</a></h4>
+								<h3>$${item['Price']}</h3>
+								<h6>${item['ProductKind']}</h6>
+							</div>
+						</div> <!-- /.Case-Studies-item -->
+					</div>`);
+			});
+			if(productHtmlItem.length == 0 ){
+				productHtmlItem.push(
+					`<div>There is no products which you want. Try to change filters.</div>`
+				)
+			}
+			const productsHtml = `
+			<div class="container">
+				<div class="Case-Studies-wrapper">
+					<div class="row">
+						${productHtmlItem.join('\n')}
+					</div> <!-- /.row -->
+				</div> <!-- /.Case-Studies-wrapper -->
+			</div>`;
+			$('#products').empty();
+			$('#products').append(productsHtml);
+		}
+		$(document).ready(()=>{
+			$('#apply_filter').click(()=>{
+				const Name = $('#filter_name').val();
+				const Kind = $('#filter_kind').val();
+				const MinPrice = $('#filter_min_price').val();
+				const MaxPrice = $('#filter_max_price').val();
+				if (MinPrice!=='' && isNaN(parseInt(MinPrice)) || MaxPrice!=='' && isNaN(parseInt(MaxPrice))) {
+					showModal('Info', 'Must input valid price', 'Got it');
+					return ;
+				}
+				console.log(Name, Kind, MinPrice, MaxPrice);
+				if(MinPrice!=='' || Name!=='' || MaxPrice!=='' || Kind!=='') {
+					queryAllProduct({Name, MaxPrice, MinPrice, Kind}).then(res => {
+						updateProducts(res.data);
+					});
+				}
+			});
+			
+
+			queryAllProduct().then(res=>{
+				if(!res) {
+					return;
+				}
+				updateProducts(res.data);
+			});
+			
+		});
+		</script>
 
 	</body>
 </html>

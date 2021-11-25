@@ -65,7 +65,7 @@
                         <div class="float-right search-button-content">
                             <div class="clear-fix">
                                 <!-- /.search-box -->
-                                <a href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
+                                <a id='login-buttn' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
                             </div>
                             <!-- /.right-content -->
                         </div>
@@ -91,10 +91,10 @@
                             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                                 <ul class="nav navbar-nav">
                                     <li><a href="index.html">Home</a></li>
-                                    <li><a href="case-studies.html">Products</a></li>
-                                    <li><a href="service.html">Stores</a></li>
-                                    <li><a href="about.html">Aggregation</a></li>
-                                    <li><a href="contact-us.html">Profile</a></li>
+                                    <li><a href="products.html">Products</a></li>
+                                    <li><a href="stores.html">Stores</a></li>
+                                    <li><a href="aggregation.html">Aggregation</a></li>
+                                    <li><a href="profile.html">Profile</a></li>
                                 </ul>
                             </div>
                             <!-- /.navbar-collapse -->
@@ -175,10 +175,10 @@
                 <div class="text-center">
                     <h3>Search a <span>Product</span> with a fuzzy name</h3>
                     <br />
-                    <form class="check-up-form">
+                    <form class="check-up-form" action="#">
                         <ul>
-                            <li><input type="text" placeholder="Enter a keyword you wanna search"></li>
-                            <li><button class="tran3s a-comon">Find Products</button></li>
+                            <li><input type="text" id="product-keyword" placeholder="Enter a keyword you wanna search"></li>
+                            <li><button class="tran3s a-comon" type="button" onclick="queryProduct()">Find Products</button></li>
                         </ul>
                     </form>
                     <!-- /.check-up-form -->
@@ -590,7 +590,9 @@
     <!-- Circle Progress -->
     <script type="text/javascript" src="vendor/circle-progress.js"></script>
     <!-- Style js -->
+    <script src="js/jquery.cookie.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/main.js"></script>
 
 </body>
 

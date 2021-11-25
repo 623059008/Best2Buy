@@ -555,7 +555,7 @@ jQuery(document).on('ready', function() {
         BannerSlider();
         GALLERYMiXiTup();
         ServicesPackagesSlider();
-        CaseStudiesSlider();
+        // CaseStudiesSlider();
         CaseStudiesSliderVtwo();
         ourSEOexpertsSlider();
         OurTrustedClientLogo();
