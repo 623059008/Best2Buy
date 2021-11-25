@@ -77,8 +77,8 @@ class ProductService extends Service {
     }
 
     async insert(data) {
-        const { ProductID, Name, InventoryAmount, Price, ProductKind } = data;
-        const res = await this.app.mysql.query('insert into products (ProductID, Name, InventoryAmount, Price, ProductKind) value (?,?,?,?,?)', [ProductID, Name, InventoryAmount, Price, ProductKind]);
+        const { Name, InventoryAmount, Price, ProductKind } = data;
+        const res = await this.app.mysql.query('insert into products ( Name, InventoryAmount, Price, ProductKind) value (?,?,?,?)', [Name, InventoryAmount, Price, ProductKind]);
         console.log('[DB][service.product.insert]', res);
         if (!res) {
             return {

@@ -9,6 +9,7 @@ module.exports = app => {
     router.post('/admin', controller.admin.findAdmin);
     router.post('/signin', controller.admin.signin);
     router.post('/signup', controller.admin.signup);
+    router.post('/cancel', controller.admin.deleteUsr);
 
     // transaction
     router.post('/insertTransaction', controller.transaction.insertTransaction);
