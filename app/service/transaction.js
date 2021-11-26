@@ -18,9 +18,6 @@ class RecordService extends Service {
         if (filter.OrderNumber) {
             sql += ' OrderNumber = ' + filter.OrderNumber + ' and';
         }
-        if (filter.OrderNumber) {
-            sql += ' OrderNumber = ' + filter.OrderNumber + ' and';
-        }
         if (filter.CustomerID) {
             sql += ' CustomerID =' + filter.CustomerID + ' and';
         }
