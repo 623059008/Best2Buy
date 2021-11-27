@@ -48,8 +48,8 @@ class RecordService extends Service {
     }
 
     async insert(data) {
-        const { Date, SalespersonName, ProductID, ProductKind, ProductsName, ProductsPrice, NumberOfProducts, TotalGrossIncome, CustomerID, Status } = data;
-        const res = await this.app.mysql.query('insert into transactions ( Date, SalespersonName, ProductID, ProductKind, ProductsName, ProductsPrice, NumberOfProducts, TotalGrossIncome, CustomerID, Status) value (?,?,?,?,?,?,?,?,?,?)', [Date, SalespersonName, ProductID, ProductKind, ProductsName, ProductsPrice, NumberOfProducts, TotalGrossIncome, CustomerID, Status]);
+        const { SalespersonName, ProductID, ProductKind, ProductsName, ProductsPrice, NumberOfProducts, TotalGrossIncome, CustomerID, Status } = data;
+        const res = await this.app.mysql.query('insert into transactions ( Date, SalespersonName, ProductID, ProductKind, ProductsName, ProductsPrice, NumberOfProducts, TotalGrossIncome, CustomerID, Status) value (?,?,?,?,?,?,?,?,?,?)', [new Date(), SalespersonName, ProductID, ProductKind, ProductsName, ProductsPrice, NumberOfProducts, TotalGrossIncome, CustomerID, Status]);
         console.log('[DB][service.transaction.insert]', res);
         if (!res) {
             return {

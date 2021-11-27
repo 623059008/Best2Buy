@@ -4,7 +4,7 @@ const Controller = require('egg').Controller;
 const { v4: uuidv4 } = require('uuid');
 
 class AdminController extends Controller {
-    async findAdmin() {
+    async findUsr() {
         const { ctx } = this;
         const { CustomerID } = ctx.request.body;
         const data = await ctx.service.admin.find({ CustomerID });
@@ -37,6 +37,12 @@ class AdminController extends Controller {
     async deleteUsr() {
         const { ctx } = this;
         const data = await ctx.service.admin.delete(ctx.request.body);
+        return (ctx.body = {...data });
+    }
+
+    async updateUsr() {
+        const { ctx } = this;
+        const data = await ctx.service.admin.update(ctx.request.body);
         return (ctx.body = {...data });
     }
 }

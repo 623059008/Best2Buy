@@ -34,9 +34,9 @@ class ProductService extends Service {
     async query(data) {
         const { filter = {} } = data || {};
         // select user info from product by username and password
-        let sql = 'select * from products,inventory,store,region where';
+        let sql = 'select * from products,inventory,store,region,salesperson where';
         if (filter.ProductID) {
-            sql += ' products.ProductID = \'' + filter.ProductID + '\' and products.ProductID = inventory.ProductID and inventory.StoreID = store.StoreID and store.Region = region.RegionID and'
+            sql += ' products.ProductID = \'' + filter.ProductID + '\' and products.ProductID = inventory.ProductID and inventory.StoreID = store.StoreID and store.Region = region.RegionID and store.StoreID = salesperson.StoreAssigned and'
         }
         if (filter.ProductKind) {
             sql += ' ProductKind like \'%' + filter.ProductKind + '%\' and';
