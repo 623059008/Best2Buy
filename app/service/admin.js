@@ -74,22 +74,24 @@ class AdminService extends Service {
     async insert(data) {
         // create a new admin
         const { Kind } = data;
-
+        let res_c = {},
+            res_b = {},
+            res_h = {};
         if (Kind == 'Home') {
-            const { Name, Street, City, State, ZipCode, Kind, Password, MarriageStatus, Gender, Age, Income } = data;
-            const res_c = await this.app.mysql.query('insert into customers (Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?)', [Name, Street, City, State, ZipCode, Kind, md5(Password)]);
+            const { Name, Street, City, State, ZipCode, Kind, Password, MarriageStatus, Gender, Age, Income, Tel, Email } = data;
+            res_c = await this.app.mysql.query('insert into customers (Name, Street, City, State, ZipCode, Kind, Password, Tel, Email) value(?,?,?,?,?,?,?,?,?)', [Name, Street, City, State, ZipCode, Kind, md5(Password), Tel, Email]);
             console.log('[DB][service.admin.insert]', res_c);
             const cid = await this.app.mysql.query('select max(CustomerID) as cid from customers');
             console.log(`[DB][service.admin.insert], ${JSON.stringify(cid)}`);
-            const res_h = await this.app.mysql.query('insert into homecustomer (CustomerID, Name, MarriageStatus, Gender, Age, Income) value(?,?,?,?,?,?)', [cid[0].cid, Name, MarriageStatus, Gender, Age, Income]);
+            res_h = await this.app.mysql.query('insert into homecustomer (CustomerID, Name, MarriageStatus, Gender, Age, Income) value(?,?,?,?,?,?)', [cid[0].cid, Name, MarriageStatus, Gender, Age, Income]);
             console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, MarriageStatus, Gender, Age, Income })}, result: ${JSON.stringify(res_h)}`);
             console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
         } else if (Kind == 'Business') {
-            const { Name, Street, City, State, ZipCode, Kind, Password, BusinessCategory, GrossAnnualIncome } = data;
-            const res_c = await this.app.mysql.query('insert into customers (Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?)', [Name, Street, City, State, ZipCode, Kind, md5(Password)]);
+            const { Name, Street, City, State, ZipCode, Kind, Password, BusinessCategory, GrossAnnualIncome, Tel, Email } = data;
+            res_c = await this.app.mysql.query('insert into customers (Name, Street, City, State, ZipCode, Kind, Password) value(?,?,?,?,?,?,?,?,?)', [Name, Street, City, State, ZipCode, Kind, md5(Password), Tel, Email]);
             console.log('[DB][service.admin.insert]', res_c);
             //const { CustomerID } = res_c;
-            const res_b = await this.app.mysql.query('insert into businesscustomer (CustomerID, Name, BusinessCategory, GrossAnnualIncome) value(?,?,?,?)', [CustomerID, Name, BusinessCategory, GrossAnnualIncome]);
+            res_b = await this.app.mysql.query('insert into businesscustomer (CustomerID, Name, BusinessCategory, GrossAnnualIncome) value(?,?,?,?)', [CustomerID, Name, BusinessCategory, GrossAnnualIncome]);
             console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, BusinessCategory, GrossAnnualIncome })}, result: ${JSON.stringify(res_b)}`);
             console.log(`[service.admin.insert] DB: ${JSON.stringify({ Name, Street, City, State, ZipCode, Kind, Password })}, result: ${JSON.stringify(res_c)}`);
         } else {
@@ -100,14 +102,14 @@ class AdminService extends Service {
             };
         }
 
-        if (!res_c || !res_h || !res_b) {
+        if (!res_c && !res_h && !res_b) {
             return {
                 success: false,
                 errno: 1002,
                 msg: 'fail to insert'
             };
         }
-        return { success: true, ...res };
+        return { success: true, data: {...res_c, ...res_h, ...res_b } };
     }
 
     async delete(data) {
