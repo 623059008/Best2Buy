@@ -40,11 +40,11 @@ class AdminService extends Service {
     }
 
     async signin(data) {
-        const { Password, Name } = data;
+        const { Password, Email } = data;
         // select user info from admin by username and password
         let usr;
-        if (Password && Name) {
-            usr = await this.app.mysql.query('select * from customers where Password = ? && Name = ?', [Password, Name]);
+        if (Password && Email) {
+            usr = await this.app.mysql.query('select * from customers where Password = ? && Email = ?', [Password, Email]);
         } else {
             return {
                 success: false,
@@ -53,7 +53,7 @@ class AdminService extends Service {
             };
         }
 
-        console.log(`[service.admin.signin] DB: ${Name} result: ${JSON.stringify(usr)}`);
+        console.log(`[service.admin.signin] DB: ${Email} result: ${JSON.stringify(usr)}`);
         if (usr.length < 1) {
             return {
                 success: false,

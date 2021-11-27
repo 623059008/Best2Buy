@@ -30,6 +30,46 @@ class ProductController extends Controller {
         // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
         return (ctx.body = {...data });
     }
+
+    //query total sales and profit of given product
+    async querySalesInfo() {
+        const { ctx } = this;
+        const data = await ctx.service.product.querySAndP(ctx.request.body);
+        // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
+        return (ctx.body = {...data });
+    }
+
+    // rank products by sales volumn
+    async rankByV() {
+        const { ctx } = this;
+        const data = await ctx.service.product.rankByV(ctx.request.body);
+        // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
+        return (ctx.body = {...data });
+    }
+
+    // rank products by porfit
+    async rankByP() {
+        const { ctx } = this;
+        const data = await ctx.service.product.rankByP(ctx.request.body);
+        // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
+        return (ctx.body = {...data });
+    }
+
+    // query business customer by profit
+    async queryBCByP() {
+        const { ctx } = this;
+        const data = await ctx.service.product.queryBCByP(ctx.request.body);
+        // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
+        return (ctx.body = {...data });
+    }
+
+    // query business customer by sales volumn
+    async rankByVOB() {
+        const { ctx } = this;
+        const data = await ctx.service.product.rankByVOB(ctx.request.body);
+        // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
+        return (ctx.body = {...data });
+    }
 }
 
 module.exports = ProductController;

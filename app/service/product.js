@@ -38,8 +38,8 @@ class ProductService extends Service {
         if (filter.ProductKind) {
             sql += ' ProductKind like \'%' + filter.ProductKind + '%\' and';
         }
-        if (filter.Keyword) {
-            sql += ' Name like \'%' + filter.Keyword + '%\' and';
+        if (filter.Name) {
+            sql += ' Name like \'%' + filter.Name + '%\' and';
         }
         if (filter.MinPrice) {
             sql += ' Price >= ' + filter.MinPrice + ' and';
@@ -80,7 +80,7 @@ class ProductService extends Service {
 
     async insert(data) {
         const { Name, InventoryAmount, Price, ProductKind } = data;
-        const res = await this.app.mysql.query('insert into products ( Name, InventoryAmount, Price, ProductKind) value (?,?,?,?)', [Name, InventoryAmount, Price, ProductKind]);
+        const res = await this.app.mysql.query('insert into products (Name, InventoryAmount, Price, ProductKind) value (?,?,?,?)', [Name, InventoryAmount, Price, ProductKind]);
         console.log('[DB][service.product.insert]', res);
         if (!res) {
             return {
@@ -136,6 +136,77 @@ class ProductService extends Service {
         console.log(`[service.product.update] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
         return { success: true, data: {...product, ...data } };
     }
+    async querySAndP(data) {
+        const { ProductID } = data;
+        const res = await this.app.mysql.query('select sum(NumberOfProducts),sum(TotalGrossIncome) from transactions where Status = \'Yes\' and ProductID = ?', [ProductID]);
+        if (!res) {
+            return {
+                success: false,
+                errno: 1011,
+                msg: 'fail to find this product'
+            };
+        }
+        console.log(`[service.product.querySAndP] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
+        return { success: true, ...res }
+    }
+
+    //rank product category by sales volumn
+    async rankByV(data) {
+        const res = await this.app.mysql.query('select ProductKind from transactions where Status = \'Yes\' order by NumberOfProducts desc');
+        if (!res) {
+            return {
+                success: false,
+                errno: 1011,
+                msg: 'fail to find this product'
+            };
+        }
+        console.log(`[service.product.rankByV] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
+        return { success: true, ...res }
+    }
+
+    //rank product category by profit
+    async rankByP(data) {
+        const res = await this.app.mysql.query('select ProductKind from transactions where Status = \'Yes\' order by TotalGrossIncome desc');
+        if (!res) {
+            return {
+                success: false,
+                errno: 1011,
+                msg: 'fail to find this product'
+            };
+        }
+        console.log(`[service.product.rankByP] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
+        return { success: true, ...res }
+    }
+
+    // rank product by sales volumm associated with business customers
+    async rankByVOB(data) {
+        const res = await this.app.mysql.query('select ProductsName from transactions,businesscustomer where Status = \'Yes\' and transactions.CustomerID = businesscustomer.CustomerID order by NumberOfProducts desc');
+        if (!res) {
+            return {
+                success: false,
+                errno: 1011,
+                msg: 'fail to find this product'
+            };
+        }
+        console.log(`[service.product.rankByV] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
+        return { success: true, ...res }
+    }
+
+    // query business customer who buy given product most
+    async queryBCByP(data) {
+        const { ProductID } = data;
+        const res = await this.app.mysql.query('select Name from transactions,businesscustomer where Status = \'Yes\' and ProductID = ? and transactions.CustomerID = businesscustomer.CustomerID and NumberOfProducts = (select max(NumberOfProducts) from transactions where ProductID = ? and Status = \'Yes\')', [ProductID, ProductID]);
+        if (!res) {
+            return {
+                success: false,
+                errno: 1011,
+                msg: 'fail to find this product'
+            };
+        }
+        console.log(`[service.product.querySAndP] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
+        return { success: true, ...res }
+    }
+
 }
 
 module.exports = ProductService;
