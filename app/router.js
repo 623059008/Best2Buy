@@ -6,10 +6,11 @@
 module.exports = app => {
     const { router, controller } = app;
     // customer
-    router.post('/admin', controller.admin.findAdmin);
+    router.post('/findUsr', controller.admin.findUsr);
     router.post('/signin', controller.admin.signin);
     router.post('/signup', controller.admin.signup);
     router.post('/cancel', controller.admin.deleteUsr);
+    router.post('/updateUsr', controller.admin.updateUsr);
 
     // transaction
     router.post('/insertTransaction', controller.transaction.insertTransaction);
