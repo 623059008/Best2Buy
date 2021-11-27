@@ -13,6 +13,7 @@ function md5(text) {
 class AdminService extends Service {
     async find(data) {
         const { CustomerID } = data;
+        console.log(CustomerID);
         // select user info from admin by username and password
         let usr;
         if (CustomerID) {
@@ -20,7 +21,7 @@ class AdminService extends Service {
         } else {
             return {
                 success: false,
-                errno: 1001,
+                errno: 1002,
                 msg: 'fail to get result for this info'
             };
         }
@@ -44,7 +45,7 @@ class AdminService extends Service {
         // select user info from admin by username and password
         let usr;
         if (Password && Email) {
-            usr = await this.app.mysql.query('select * from customers where Password = ? && Email = ?', [Password, Email]);
+            usr = await this.app.mysql.query('select * from customers where Password = ? && Email = ?', [md5(Password), Email]);
         } else {
             return {
                 success: false,
@@ -132,8 +133,8 @@ class AdminService extends Service {
     async update(data) {
         // update admin info
         const { CustomerID: cid, Kind } = data;
-        const admin = await this.find(cid);
-        if (!admin || !admin.success) {
+        const usr = await this.find(data);
+        if (!usr) {
             return {
                 success: false,
                 errno: 1003,
@@ -142,6 +143,7 @@ class AdminService extends Service {
         }
         if (Kind == 'Home') {
             const { Name, Street, City, State, ZipCode, Kind, Password, MarriageStatus, Gender, Age, Income } = usr;
+            console.log(usr)
             const res_c = await this.app.mysql.update('customers', {
                 Name: data.Name || Name,
                 Street: data.Street || Street,
@@ -205,7 +207,7 @@ class AdminService extends Service {
                 };
             }
         };
-        return { success: true, data: {...admin, ...data } };
+        return { success: true, data: {...usr, ...data } };
     }
 }
 

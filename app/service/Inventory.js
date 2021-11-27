@@ -69,7 +69,7 @@ class InventoryService extends Service {
 
     async insert(data) {
         const { StoreID, ProductID, NumberOfProduct } = data;
-        const res = await this.app.mysql.query('insert into inventory ( StoreID, ProductID, NumberOfProduct ) value (?,?,?)', [StoreID, ProductID, NumberOfProduct]);
+        const res = await this.app.mysql.query('insert into inventory (StoreID, ProductID, NumberOfProduct) value (?,?,?)', [StoreID, ProductID, NumberOfProduct]);
         console.log('[DB][service.inventory.insert]', res);
         if (!res) {
             return {
