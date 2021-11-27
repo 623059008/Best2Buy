@@ -110,14 +110,16 @@
           <div class="col-md-12 col-sm-12 col-xs-12 float-right">
             <p>Unable to fetch your profile, please refresh this page.</p>
           </div>
+          
+        </div>
+        <a name="transaction"></a>
+        <div class="row" id="history">
           <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
             <h1>History Order</h1>
-            <p>
-              OrderNumber: ${item['OrderNumber']} <br /> Date: ${item['Date']}<br /> SalespersonName: ${item['SalespersonName']}<br /> ProductName: ${item['ProductsName']}<br /> ProductKind: ${item['ProductsKind']}<br /> Price: ${item['ProductsPrice']}<br
-              /> Number: ${item['NumberOfProducts']}<br /> Order Total: ${item['TotalGrossIncome']}<br /> Status: ${item['Status']}<br />
-            </p>
+            <p>There is no order. <a href="/products.html">Visit Products</a></p>
           </div>
         </div>
+        
         <!-- /.row -->
       </div>
       <!-- /.container -->
@@ -308,7 +310,9 @@
     </div>
     `;
       $('#profile').empty();
-      $('#profile').append(profileHtml, transactionHtml);
+      $("#history").empty();
+      $('#profile').append(profileHtml);
+      $("#history").append(transactionHtml);
     }
     $(document).ready(function() {
       let userdata = Cookies.get('userdata');
