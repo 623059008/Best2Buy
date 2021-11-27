@@ -12,6 +12,10 @@ const infoText = {
   'registryError': 'Required fields must be completed',
   'registryError2': 'Repeat password is not identical with password',
   'buySuccess': 'Order has been placed successfully!',
+  'InsertFail': 'Unable to insert, please try it again',
+  'InsertSuccess': 'Insert Successfully',
+  'UpdateFail': 'Unable to update, please try it agian',
+  'UpdateSuccess': 'Update Successfully',
   'Got': ' Got it',
   'confirm': 'I confirm',
   'cancel': 'Cancel',
@@ -138,7 +142,7 @@ function queryAllRegion(filter={}) {
 }
 
 function queryAllSalesperson(filter={}) {
-    const url = getUrl('querySalesperson');
+    const url = getUrl('querySalesPerson');
     return request(url, filter).then(res => {
         console.log('Salesperson res', res);
         if(!res || !res.success) {
@@ -178,6 +182,116 @@ function buyProduct(data) {
     });
 }
 
+function addProduct() {
+    const url = getUrl('insertProduct');
+    const Name = $('#Name').val();
+    const InventoryAmout = $('#InventoryAmout').val();
+    const Price = $('#Price').val();
+    const ProductKind = $('#ProductKind').val();
+    const ImgUrl = $('#ImgUrl').val();
+    request(url, {Name, InventoryAmout, Price, ProductKind, ImgUrl}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+    });
+}
+
+function updateProduct() {
+    const url = getUrl('updateProduct');
+    const Name = $('#Name').val();
+    const InventoryAmout = $('#InventoryAmout').val();
+    const Price = $('#Price').val();
+    const ProductKind = $('#ProductKind').val();
+    const ImgUrl = $('#ImgUrl').val();
+    const ProductID = $('#ProductID').val();
+    request(url, {ProductID, Name, InventoryAmout, Price, ProductKind, ImgUrl}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['UpdateFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got']);
+    });
+}
+
+function addInventory() {
+    const url = getUrl('insertInventory');
+    const StoreID = $('#StoreID').val();
+    const ProductID = $('#ProductID').val();
+    const NumberOfProduct = $('#NumberOfProduct').val();
+
+    request(url, {StoreID, ProductID, NumberOfProduct}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+    });
+}
+
+function addStore() {
+    const url = getUrl('insertStore');
+    const Address = $('#Address').val();
+    const Manager = $('#Manager').val();
+    const NumberOfSalespersons = $('#NumberOfSalespersons').val();
+    const Region = $('#Region').val();
+    request(url, {Address, Manager, NumberOfSalespersons, Region}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+    });
+}
+
+function addSalesPerson() {
+    const url = getUrl('insertSalesPerson');
+    const Name = $('#Name').val();
+    const Address = $('#Address').val();
+    const Email = $('#Email').val();
+    const JobTitle = $('#JobTitle').val();
+    const StoreAssigned = $('#StoreAssigned').val();
+    const Salary = $('#Salary').val();
+    request(url, {Name, Address, Email, JobTitle, StoreAssigned, Salary}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+    });
+}
+
+function updateSalesPerson() {
+    const url = getUrl('updateSalesPerson');
+    const Name = $('#Name').val();
+    const Address = $('#Address').val();
+    const Email = $('#Email').val();
+    const JobTitle = $('#JobTitle').val();
+    const StoreAssigned = $('#StoreAssigned').val();
+    const Salary = $('#Salary').val();
+    request(url, {Name, Address, Email, JobTitle, StoreAssigned, Salary}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['UpdateFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got']);
+    });
+}
+
+function addRegion() {
+    const url = getUrl('insertRegion');
+    const Name = $('#Name').val();
+    const Manager = $('#Manager').val();
+    request(url, {Name, Manager}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+    });
+}
+
 function deleteProduct(ProductID) {
     const okFunc = ()=>{
         const url = getUrl('deleteProduct');
@@ -210,6 +324,20 @@ function deleteStuff(SalesPersonID) {
     const okFunc = ()=>{
         const url = getUrl('deleteSalesPerson');
         request(url, {SalesPersonID}).then(res => {
+            if(!res || !res.success) {
+                showModal('Error', infoText['deleteError'], infoText['Got']);
+                return;
+            }
+            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
+        });
+    }
+    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
+}
+
+function deleteCustomer(CustomerID) {
+    const okFunc = ()=>{
+        const url = getUrl('cancel');
+        request(url, {CustomerID}).then(res => {
             if(!res || !res.success) {
                 showModal('Error', infoText['deleteError'], infoText['Got']);
                 return;
@@ -355,6 +483,7 @@ $(document).ready(function(){
                     <li><a href="/product-manage.html">Product Management</a></li>
                     <li><a href="/store-manage.html">Store Management</a></li>
                     <li><a href="/salesperson-manage.html">Staff Management</a></li>
+                    <li><a href="/customer-manage.html">Customer</a></li>
                 </ul>
             `;
             $('#login-button').empty();
@@ -365,7 +494,7 @@ $(document).ready(function(){
     if(role !== 'Administrator') {
         const url = location.href.split('//')[1];
         const pageName = url.split('/')[1].split('.')[0];
-        authList =  ['product-manage', 'store-manage', 'salesperson-manage']
+        authList =  ['product-manage', 'store-manage', 'salesperson-manage', 'customer-manage']
         if(authList.includes(pageName)) {
             location.href = 'index.html';
         }

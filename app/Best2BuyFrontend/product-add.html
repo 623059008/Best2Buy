@@ -8,7 +8,7 @@
   <!-- For IE -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Product Management Page</title>
+  <title></title>
 
 
   <!-- Favicon -->
@@ -83,16 +83,17 @@
       <!-- /.main-menu -->
     </section>
     <!-- /.b-seo-menu-wrapper -->
+
     <!-- Theme Inner Banner ____________________________ -->
     <section class="short-theme-banner">
-      <div class="inner-banner-opacity">
+      <div class="inner-banner-opacity-six">
         <div class="container">
           <div class="inner-banner-title">
-            <h1>Products Management</h1>
+            <h1>Product Management Page</h1>
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><span><i class="fa fa-arrow-right" aria-hidden="true"></i></span></li>
-              <li><a href="#">Products Management</a></li>
+              <li><a href="#">Product Management</a></li>
             </ul>
           </div>
           <!-- /.inner-banner-title -->
@@ -103,45 +104,37 @@
     </section>
     <!-- /.them-inner-banner -->
 
-    <!-- filter -->
-    <div class="container product-filter-container">
-      <h3>Filters</h3>
-      <div class="product-filter">
-        <div class="row">
-          <input type="text" id="filter_name" value="" placeholder="search by fuzzy name" />
-          <input type="text" id="filter_kind" value="" placeholder="search by kind" />
-        </div>
-        <div class="row">
-          <input type="text" id="filter_min_price" value="" placeholder="min price" />
-          <input type="text" id="filter_max_price" value="" placeholder="max price" />
-        </div>
-        <div class="row">
-          <label for="soldout"> Sold Out</label>
-          <input type="checkbox" id="soldout" name="soldout" value="True">
-        </div>
-        <div class="row">
-          <button class="hvr-float-shadow" id="apply_filter" type="button">Apply</button>
-          <button class="hvr-float-shadow" id="cancel_filter" type="button">Cancel</button>
-        </div>
-        <div>
-          <a class="manage-btn hvr-float-shadow" id="add_product" type="button" href="product-add.html">Add</a>
-        </div>
-      </div>
-    </div>
-    <!-- Products V 1 _________________________________ -->
-    <section id="products" class="Case-Studies">
+    <!-- Register Page _________________________________ -->
+    <section class="Login-Page">
       <div class="container">
-        <div class="Case-Studies-wrapper">
-          <div class='row'>
-            <div class="empty-product">There is no products which you want. Try to change filters.</div>
-          </div>
-          <!-- /.row -->
+        <div class="Login-form Register-form">
+          <h2>Add Product</h2>
+          <form action="#">
+            <p>Name <span>*</span></p>
+            <input id="Name" type="text" />
+            <p>InventoryAmount <span>*</span></p>
+            <input id="InventoryAmount" type="text">
+            <p>Price <span>*</span></p>
+            <input id="Price" type="text">
+            <p>ProductKind <span>*</span></p>
+            <input id="ProductKind" type="text">
+            <p>ImgUrl <span>*</span></p>
+            <input id="ImgUrl" type="text">
+            <ul>
+              <li><button class="a-comon hvr-float-shadow" type="button" onclick="addProduct()">Add a new Product</button></li>
+            </ul>
+          </form>
+          <!-- <h2>Login with social networks</h2>
+          <ul class="Register-button">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Google Plus</a></li>
+            <li><a href="#">Linkedin</a></li>
+          </ul> -->
         </div>
-        <!-- /.Case-Studies-wrapper -->
       </div>
-      <!-- /.container -->
     </section>
-    <!-- /.Case-Studies -->
+    <!-- /.Register Page -->
 
     <!-- Footer ____________________________ -->
     <footer>
@@ -197,7 +190,7 @@
           <div class="clear-fix">
             <p class="float-left">Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
             <ul class="float-right">
-              <li><a href="#">Products</a></li>
+              <li><a href="#">Case Studies</a></li>
               <li><a href="#">Privacy Policy</a></li>
               <li><a href="#">Terms & Condition</a></li>
               <li><a href="#">Faq</a></li>
@@ -258,110 +251,6 @@
   <script src="js/jquery.cookie.js"></script>
   <script src="js/custom.js"></script>
   <script src="js/main.js"></script>
-  <script type='text/javascript'>
-    function updateProducts(products) {
-      const productHtmlItem = [];
-      products.forEach(item => {
-        if (item['Name'].length > 55) {
-          item['Name'] = item['Name'].substr(0, 55) + '...';
-        }
-        productHtmlItem.push(
-          `<div class="col-sm-3 col-xs-6">
-						<div class="Case-Studies-item">
-							<img onclick="location.href='product-update.html?id=${item['ProductID']}'" src="${item["ImgUrl"]}" alt=${item['Name']}>
-							<div class="case-item-opacity">
-								<span class=".titleanimi"></span>
-							</div>
-							<div class="case-item-description" style="height: auto;">
-								<h4><a href="product-update.html?id=${item['ProductID']}">${item['ProductID']}. ${item['Name']}</a></h4>
-								<h3>$${item['Price']}</h3>
-								<h6>${item['ProductKind']}</h6>
-                <button class='manage-btn hvr-float-shadow' onclick="deleteProduct(${item['ProductID']})">Delete</button>
-							</div>
-						</div> <!-- /.Case-Studies-item -->
-					</div>`);
-      });
-      if (productHtmlItem.length == 0) {
-        productHtmlItem.push(
-          `<div>There is no products which you want. Try to change filters.</div>`
-        )
-      }
-      const productsHtml = `
-			<div class="container">
-				<div class="Case-Studies-wrapper">
-					<div class="row">
-						${productHtmlItem.join('\n')}
-					</div> <!-- /.row -->
-				</div> <!-- /.Case-Studies-wrapper -->
-			</div>`;
-      $('#products').empty();
-      $('#products').append(productsHtml);
-    }
-    $(document).ready(() => {
-      $('#apply_filter').click(() => {
-        const Keyword = $('#filter_name').val();
-        const ProductKind = $('#filter_kind').val();
-        const MinPrice = $('#filter_min_price').val();
-        const MaxPrice = $('#filter_max_price').val();
-        const SoldOut = $('#soldout').is(':checked');
-        if (MinPrice !== '' && isNaN(parseInt(MinPrice)) || MaxPrice !== '' && isNaN(parseInt(MaxPrice))) {
-          showModal('Info', 'Must input valid price', 'Got it');
-          return;
-        }
-        console.log(Keyword, ProductKind, MinPrice, MaxPrice, SoldOut);
-        if (MinPrice !== '' || Keyword !== '' || MaxPrice !== '' || ProductKind !== '' || SoldOut) {
-          queryAllProduct({
-            Keyword,
-            MaxPrice,
-            MinPrice,
-            ProductKind,
-            SoldOut
-          }).then(res => {
-            if (!res || !res.data) {
-              showModal('Error', 'Services are not available, please try it again', 'Got it');
-              return;
-            }
-            updateProducts(res.data);
-          });
-        }
-      });
-      $('#cancel_filter').click(() => {
-        $('#filter_name').val('');
-        $('#filter_kind').val('');
-        $('#filter_min_price').val('');
-        $('#filter_max_price').val('');
-        $('#soldout').attr('checked', false);
-        queryAllProduct().then(res => {
-          if (!res || !res.data) {
-            showModal('Error', 'Services are not available, please try it again', 'Got it');
-            return;
-          }
-          updateProducts(res.data);
-        });
-      })
-
-      // init products page
-      const params = Cookies.get('product_filter');
-      let filter = {};
-      if (params && params !== "undefined") {
-        try {
-          filter = JSON.parse(params) || {};
-          $('#filter_name').val(filter.Keyword);
-          Cookies.set('product_filter', null);
-        } catch (e) {
-          console.log('[InitProducts] Wrong Json string', params);
-        }
-      }
-      queryAllProduct(filter).then(res => {
-        if (!res || !res.data) {
-          showModal('Error', 'Services are not available, please try it again', 'Got it');
-          return;
-        }
-        updateProducts(res.data);
-      });
-
-    });
-  </script>
 
 </body>
 
