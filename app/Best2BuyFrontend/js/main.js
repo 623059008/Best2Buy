@@ -296,7 +296,6 @@ $(document).ready(function(){
                 location.href = '/index.html';
             });
         } else {
-            $('#login-button').empty();
             const adminHtml = `
                 <ul>
                     <li><a href="/product_manage.html">Product Management</a></li>
@@ -304,6 +303,7 @@ $(document).ready(function(){
                     <li><a href="/salesperson_manage.html">Product Management</a></li>
                 </ul>
             `;
+            $('#login-button').empty();
             $('#login-button').append(adminHtml);
         }
 
