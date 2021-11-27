@@ -50,6 +50,9 @@ class ProductService extends Service {
         if (filter.SoldOut) {
             sql += ' InventoryAmount > 0' + ' and';
         }
+        if (filter.ProductID) {
+            sql += ' ProductID = ' + filter.ProductID + ' and';
+        }
         let filterNum = 0;
         for (let i in filter) {
             filterNum++;
@@ -61,7 +64,7 @@ class ProductService extends Service {
         }
         const product = await this.app.mysql.query(sql);
 
-        console.log(`[service.product.find] DB: ${JSON.stringify(filter)} ${sql} result: ${JSON.stringify(product)}`);
+        console.log(`[service.product.find] DB: ${JSON.stringify(filter)} ${sql}`);
         if (!product) {
             return {
                 success: false,

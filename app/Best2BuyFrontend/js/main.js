@@ -2,15 +2,27 @@
 // const baseUrl = 'http://192.168.3.21:7001/';
 const baseUrl = '/';
 const infoText = {
-    'networkError':'Services are not available, please try it again',
-    'loginError': 'Username and Password are required!',
-    'registryError': 'Required fields must be completed',
-    'registryError2': 'Repeat password is not identical with password',
-    'Got': ' Got it',
-    
+  'networkError': 'Services are not available, please try it again',
+  'buyError': 'Unable to send transaction, please try it again',
+  'loginError': 'Username and Password are required!',
+  'loginError2': 'Fail to login by this information',
+  'registryError': 'Required fields must be completed',
+  'registryError2': 'Repeat password is not identical with password',
+  'buySuccess': 'Order has been placed successfully!',
+  'Got': ' Got it',
 };
 
-const request = async (api = '', data = {}) => {
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) { return pair[1]; }
+  }
+  return (false);
+}
+
+const request = async(api = '', data = {}) => {
   if (Object.prototype.toString.call(data) !== '[object Object]') {
     throw new Error('request function can not receive non-object data');
   }
@@ -52,11 +64,11 @@ const request = async (api = '', data = {}) => {
     .catch(error => console.log('[Network Error]', error));
 };
 
-function showModal(title = 'Info', content = '', btn1 = 'Ok', btn1Fn =null, btn2, btn2Fn = null) {
-    window.btn1Fn = btn1Fn;
-    window.btn2Fn = btn2Fn;
-    $('#info-modal').remove();
-    const modalHtml = `
+function showModal(title = 'Info', content = '', btn1 = 'Ok', btn1Fn = null, btn2, btn2Fn = null) {
+  window.btn1Fn = btn1Fn;
+  window.btn2Fn = btn2Fn;
+  $('#info-modal').remove();
+  const modalHtml = `
     <div id="info-modal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -96,26 +108,75 @@ function queryAllProduct(filter={}) {
     });
 }
 
-function queryProduct() {
+function queryAllStores(filter={}) {
+    const url = getUrl('queryStores');
+    return request(url, filter).then(res => {
+        console.log('stores res', res);
+        if(!res || !res.success) {
+            showModal('Error', infoText['networkError'], infoText['Got']);
+            return null;
+        }
+        return res;
+    });
+}
+
+function queryAllRegion(filter={}) {
+    const url = getUrl('queryRegion');
+    return request(url, filter).then(res => {
+        console.log('Region res', res);
+        if(!res || !res.success) {
+            showModal('Error', infoText['networkError'], infoText['Got']);
+            return null;
+        }
+        return res;
+    });
+}
+
+function queryAllSalesperson(filter={}) {
+    const url = getUrl('querySalesperson');
+    return request(url, filter).then(res => {
+        console.log('Salesperson res', res);
+        if(!res || !res.success) {
+            showModal('Error', infoText['networkError'], infoText['Got']);
+            return null;
+        }
+        return res;
+    });
+}
+
+function queryAllTransaction(filter={}) {
+    filter.CustomerID = Cookies.get('userid');
+    const url = getUrl('queryTransaction');
+    return request(url, filter).then(res => {
+        console.log('Transaction res', res);
+        if(!res || !res.success) {
+            showModal('Error', infoText['networkError'], infoText['Got']);
+            return null;
+        }
+        return res;
+    });
+}
+
+function buyProduct(id) {
+    const url = getUrl('insertTransaction');
+    const CustomerID = Cookies.get('userid');
+    const data = {ProductID: id, CustomerID};
+    console.log('[*] buy', data);
+    return  request(url, data).then(res => {
+        if(!res || !res.success) {
+            showModal('Error', infoText['buyError'], infoText['Got']);
+        }
+        showModal('Info', infoText['buySuccess'], infoText['Got']);
+    });
+}
+
+function queryProductByKeyword() {
     const value = $("#product-keyword").val();
     const data = {
-        Name: value,
+        Keyword: value,
     };
     Cookies.set('product_filter', JSON.stringify(data));
     location.href = '/products.html';
-    // console.log('[*]', value);
-    // const url = getUrl('queryProduct');
-    // return request(url, {
-    //     Name: value
-    // }).then(res => {
-    //     console.log('[*]search res: ', res);
-    //     if(!res || !res.success) {
-    //         showModal('Error', infoText['networkError'], infoText['Got']);
-    //         return;
-    //     }
-        
-    //     return res;
-    // });
 }
 
 function login() {
@@ -133,12 +194,18 @@ function login() {
     }).then(res => {
         console.log('[*] login', res);
         if(!res || !res.success) {
+            if(res.errno === '1001') {
+                showModal('Error', infoText['loginError2'], infoText['Got']);    
+                return;
+            }
             showModal('Error', infoText['networkError'], infoText['Got']);
             return;
         }
         // [TODO_Check] Login Successfully
-        Cookies.set('username', res.data.name);
-        Cookies.set('userid', res.data.id);
+        Cookies.set('username', res.data.Name);
+        Cookies.set('userid', res.data.CustomerID);
+        Cookies.set('userrole', res.data.Kind);
+        Cookies.set('userdata', JSON.stringify(res.data));
         showModal('Success','Login Successfully!', 'ok', ()=>{
             location.href = "/index.html";
         });
@@ -208,11 +275,36 @@ function showlostpassword() {
 }
 
 $(document).ready(function(){
-    if($('#login-button')) {
-        if(Cookies.get('username') && Cookies.get('userid')) {
+    console.log('Cookie', Cookies.get('username'), Cookies.get('userid'), Cookies.get('userrole'));
+    const role = Cookies.get('userrole') || 'Home';
+    if(Cookies.get('username') && Cookies.get('userid')) {
+        if (role !== 'Administrator') {
+            $('#login-buttn').empty();
+            $('#login-buttn').attr('href','#');
+            $('#login-buttn').append(`<span>Welcome ${Cookies.get('username')}</span>`);
+            $('#login-buttn').mouseenter(function(){
+                $('#login-buttn>span').text('Logout');
+            });
+            $('#login-buttn').mouseleave(function(){
+                $('#login-buttn>span').text(`Welcome ${Cookies.get('username')}`);
+            });
+            $('#login-buttn').click(function(){
+                Cookies.set('username', '');
+                Cookies.set('userid', '');
+                Cookies.set('userdata', '');
+                location.href = '/index.html';
+            });
+        } else {
             $('#login-button').empty();
-            $('#login-button').attr('href','#');
-            $('#login-button').append(`<span>Welcome ${Cookies.get('username')}</span>`);
+            const adminHtml = `
+                <ul>
+                    <li><a href="/product_manage.html">Product Management</a></li>
+                    <li><a href="/store_manage.html">Product Management</a></li>
+                    <li><a href="/salesperson_manage.html">Product Management</a></li>
+                </ul>
+            `;
+            $('#login-button').append(adminHtml);
         }
+
     }
 });

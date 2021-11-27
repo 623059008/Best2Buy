@@ -8,7 +8,7 @@
   <!-- For IE -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title></title>
+  <title>Product Details</title>
 
 
   <!-- Favicon -->
@@ -41,6 +41,7 @@
             <div class="float-right search-button-content">
               <div class="clear-fix">
                 <!-- /.search-box -->
+                <a id='login-buttn' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
               </div>
               <!-- /.right-content -->
             </div>
@@ -55,11 +56,11 @@
               <!-- Brand and toggle get grouped for better mobile display -->
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed tran3s" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
-										<span class="sr-only tran3s">Toggle navigation</span>
-										<span class="icon-bar tran3s"></span>
-										<span class="icon-bar tran3s"></span>
-										<span class="icon-bar tran3s"></span>
-									</button>
+					<span class="sr-only tran3s">Toggle navigation</span>
+					<span class="icon-bar tran3s"></span>
+					<span class="icon-bar tran3s"></span>
+					<span class="icon-bar tran3s"></span>
+				</button>
               </div>
 
               <!-- Collect the nav links, forms, and other content for toggling -->
@@ -81,18 +82,17 @@
       </div>
       <!-- /.main-menu -->
     </section>
-    <!-- /.b-seo-menu-wrapper -->
 
     <!-- Theme Inner Banner ____________________________ -->
     <section class="short-theme-banner">
-      <div class="inner-banner-opacity-six">
+      <div class="inner-banner-opacity-two">
         <div class="container">
           <div class="inner-banner-title">
-            <h1>Register Page</h1>
+            <h1>Product Details</h1>
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><span><i class="fa fa-arrow-right" aria-hidden="true"></i></span></li>
-              <li><a href="#">Register</a></li>
+              <li><a href="#">Product Details</a></li>
             </ul>
           </div>
           <!-- /.inner-banner-title -->
@@ -103,77 +103,15 @@
     </section>
     <!-- /.them-inner-banner -->
 
-    <!-- Register Page _________________________________ -->
-    <section class="Login-Page">
-      <div class="container">
-        <div class="Login-form Register-form">
-          <h2>Register Now</h2>
-          <form action="#">
-            <ul>
-              <li>
-                <p>Account Type <span>*</span></p>
-              </li>
-              <li>
-                <label for="KindHome">Home</label>
-                <input type="radio" id="KindHome" name="Kind" value="Home" checked>
-              </li>
-              <li>
-                <label for="KindBus">Business</label>
-                <input type="radio" id="KindBus" name="Kind" value="Business">
-              </li>
-              <li>
-                <label for="KindAdmin">Administrator</label>
-                <input type="radio" id="KindAdmin" name="Kind" value="Administrator">
-              </li>
-            </ul>
-            <p>Username <span>*</span></p>
-            <input id="username" type="text" />
-            <p>Password <span>*</span></p>
-            <input id="password" type="password" />
-            <p>Repeat Password <span>*</span></p>
-            <input id="repassword" type="password">
-            <p>Street <span>*</span></p>
-            <input id="street" type="text">
-            <p>City <span>*</span></p>
-            <input id="city" type="text">
-            <p>State <span>*</span></p>
-            <input id="state" type="text">
-            <p>ZipCode <span>*</span></p>
-            <input id="zipcode" type="text">
-            <div id='business'>
-              <p>Business Category <span>*</span></p>
-              <input id="BusinessCategory" type="text">
-              <p>Gross Annual Income <span>*</span></p>
-              <input id="GrossAnnualIncome" type="text">
-            </div>
-            <div id='home'>
-              <p>Gender<span>*</span></p>
-              <input id="Gender" type="text">
-              <p>Age<span>*</span></p>
-              <input id="Age" type="text">
-              <p>Marriage Status<span>*</span></p>
-              <input id="MarriageStatus" type="text">
-              <p>Income<span>*</span></p>
-              <input id="Income" type="text">
-            </div>
-            <ul>
-              <li><button class="a-comon hvr-float-shadow" type="button" onclick="reigster()">Sign Up</button></li>
-              <li>
-                <p>Are you a member? <a href="/login.html">Login now</a></p>
-              </li>
-            </ul>
-          </form>
-          <!-- <h2>Login with social networks</h2>
-          <ul class="Register-button">
-            <li><a href="#">Facebook</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Google Plus</a></li>
-            <li><a href="#">Linkedin</a></li>
-          </ul> -->
-        </div>
+    <!-- Case details _________________________________ -->
+    <section class="service-section">
+      <div class="container" id="productDetails">
+        
+        <!-- /.row -->
       </div>
+      <!-- /.container -->
     </section>
-    <!-- /.Register Page -->
+    <!-- /.service-section -->
 
     <!-- Footer ____________________________ -->
     <footer>
@@ -290,23 +228,51 @@
   <script src="js/jquery.cookie.js"></script>
   <script src="js/custom.js"></script>
   <script src="js/main.js"></script>
-  <script type='text/javascript'>
-    $(document).ready(function() {
-      $('input[type=radio][name=Kind]').change((e) => {
-        if (e.target.value == 'Home') {
-          $('#home').show();
-          $('#business').hide();
-        } else if (e.target.value == 'Business') {
-          $('#home').hide();
-          $('#business').show();
-        } else {
-          // home
-          $('#home').hide();
-          $('#business').hide();
-        }
-      });
-      $('#business').hide();
-    });
+  <script type="text/javascript">
+  function updateProductsDetail(product) {
+    if(!Array.isArray(product) || product.length != 1) {
+      showModal('Error', 'Services are not available, please try it again', 'Got it');
+      return;
+    }
+    const item = product[0];
+    const detailHtml = `
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <img src="${item["ImgUrl"]}" alt="products" />
+        </div>
+        <div class="col-md-8 col-xs-12 float-right">
+          <div class="service-right-side">
+            <p>
+              Product Name: <h3>${item['Name']}</h3>
+              <br />
+              Product Price: <h4>${item["Price"]}$</h4>
+              <br />
+              Category: <h4><span>${item["ProductKind"]}</span></h4>
+              <br />
+              Inventory Amount: <h4>${item["InventoryAmount"]}</h4>
+            </p>
+            <button class="buy hvr-float-shadow" onclick="buyProduct(${item["ProductID"]})" id="buy">Buy It</button>
+          </div>
+          <!-- /.service-right-side -->
+        </div>
+        <!-- /.col -->
+
+        
+        <!-- /.col -->
+      </div>`;
+    $("#productDetails").empty();
+    $("#productDetails").append(detailHtml);
+  }
+	$(document).ready(function() {
+		const ProductID = getQueryVariable('id');
+		queryAllProduct({ProductID}).then(res=>{
+			if(!res || !res.data) {
+					showModal('Error', 'Services are not available, please try it again', 'Got it');
+					return;
+				}
+			updateProductsDetail(res.data);
+		});
+	});
   </script>
 
 </body>

@@ -8,7 +8,7 @@
   <!-- For IE -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title></title>
+  <title>Profile</title>
 
 
   <!-- Favicon -->
@@ -31,7 +31,6 @@
 <body>
 
   <div class="main-page-wrapper">
-
     <!-- Theme Main Menu ____________________________ -->
     <section class="b-seo-menu-wrapper">
       <div class="theme-main-menu">
@@ -41,6 +40,7 @@
             <div class="float-right search-button-content">
               <div class="clear-fix">
                 <!-- /.search-box -->
+                <a id='login-buttn' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
               </div>
               <!-- /.right-content -->
             </div>
@@ -85,14 +85,14 @@
 
     <!-- Theme Inner Banner ____________________________ -->
     <section class="short-theme-banner">
-      <div class="inner-banner-opacity-six">
+      <div class="inner-banner-opacity">
         <div class="container">
           <div class="inner-banner-title">
-            <h1>Register Page</h1>
+            <h1>Stores</h1>
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><span><i class="fa fa-arrow-right" aria-hidden="true"></i></span></li>
-              <li><a href="#">Register</a></li>
+              <li><a href="#">Stores</a></li>
             </ul>
           </div>
           <!-- /.inner-banner-title -->
@@ -103,77 +103,66 @@
     </section>
     <!-- /.them-inner-banner -->
 
-    <!-- Register Page _________________________________ -->
-    <section class="Login-Page">
-      <div class="container">
-        <div class="Login-form Register-form">
-          <h2>Register Now</h2>
-          <form action="#">
-            <ul>
-              <li>
-                <p>Account Type <span>*</span></p>
-              </li>
-              <li>
-                <label for="KindHome">Home</label>
-                <input type="radio" id="KindHome" name="Kind" value="Home" checked>
-              </li>
-              <li>
-                <label for="KindBus">Business</label>
-                <input type="radio" id="KindBus" name="Kind" value="Business">
-              </li>
-              <li>
-                <label for="KindAdmin">Administrator</label>
-                <input type="radio" id="KindAdmin" name="Kind" value="Administrator">
-              </li>
-            </ul>
-            <p>Username <span>*</span></p>
-            <input id="username" type="text" />
-            <p>Password <span>*</span></p>
-            <input id="password" type="password" />
-            <p>Repeat Password <span>*</span></p>
-            <input id="repassword" type="password">
-            <p>Street <span>*</span></p>
-            <input id="street" type="text">
-            <p>City <span>*</span></p>
-            <input id="city" type="text">
-            <p>State <span>*</span></p>
-            <input id="state" type="text">
-            <p>ZipCode <span>*</span></p>
-            <input id="zipcode" type="text">
-            <div id='business'>
-              <p>Business Category <span>*</span></p>
-              <input id="BusinessCategory" type="text">
-              <p>Gross Annual Income <span>*</span></p>
-              <input id="GrossAnnualIncome" type="text">
+    <!-- Our Blog _________________________________ -->
+        <section class="our-blog-section">
+            <div class="container">
+                <div class="theme-title text-center">
+                    <h2>Our stores<br>in different <span>Regions</span></h2>
+                    <span class="titleanimi"></span>
+                </div>
+                <!-- /.theme-title -->
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="blog-item">
+                            <div class="blog-img">
+                                <img src="images/blog/store-1.png" alt="image">
+                            </div>
+                            <!-- /.blog-img -->
+                            <div class="blog-title-text">
+                                <h6><b>504</b> <span>Hobart St, Pittsburgh, PA, 15217</span></h6>
+                                <h4><a href="#">Best place for buying beverage</a></h4>
+                            </div>
+                            <!-- /.blog-title-text -->
+                        </div>
+                        <!-- /.blog-item -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="blog-item">
+                            <div class="blog-img">
+                                <img src="images/blog/store-2.png" alt="image">
+                            </div>
+                            <!-- /.blog-img -->
+                            <div class="blog-title-text">
+                                <h6><b>432</b><span>Forbics St,Pittsburgh, PA, 15217</span></h6>
+                                <h4><a href="#">Welcome to here to buy sweets</a></h4>
+                            </div>
+                            <!-- /.blog-title-text -->
+                        </div>
+                        <!-- /.blog-item -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-4 col-sm-12 col-xs-12">
+                        <div class="blog-item">
+                            <div class="blog-img">
+                                <img src="images/blog/store-3.png" alt="image">
+                            </div>
+                            <!-- /.blog-img -->
+                            <div class="blog-title-text">
+                                <h6><b>346</b><span>Sample St, Pittsburgh, PA, 15202</span></h6>
+                                <h4><a href="#">Here is the best place to buy clothes</a></h4>
+                            </div>
+                            <!-- /.blog-title-text -->
+                        </div>
+                        <!-- /.blog-item -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
             </div>
-            <div id='home'>
-              <p>Gender<span>*</span></p>
-              <input id="Gender" type="text">
-              <p>Age<span>*</span></p>
-              <input id="Age" type="text">
-              <p>Marriage Status<span>*</span></p>
-              <input id="MarriageStatus" type="text">
-              <p>Income<span>*</span></p>
-              <input id="Income" type="text">
-            </div>
-            <ul>
-              <li><button class="a-comon hvr-float-shadow" type="button" onclick="reigster()">Sign Up</button></li>
-              <li>
-                <p>Are you a member? <a href="/login.html">Login now</a></p>
-              </li>
-            </ul>
-          </form>
-          <!-- <h2>Login with social networks</h2>
-          <ul class="Register-button">
-            <li><a href="#">Facebook</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Google Plus</a></li>
-            <li><a href="#">Linkedin</a></li>
-          </ul> -->
-        </div>
-      </div>
-    </section>
-    <!-- /.Register Page -->
+            <!-- /.container -->
+        </section>
+        <!-- /.our-blog-section -->
 
     <!-- Footer ____________________________ -->
     <footer>
@@ -290,22 +279,21 @@
   <script src="js/jquery.cookie.js"></script>
   <script src="js/custom.js"></script>
   <script src="js/main.js"></script>
-  <script type='text/javascript'>
-    $(document).ready(function() {
-      $('input[type=radio][name=Kind]').change((e) => {
-        if (e.target.value == 'Home') {
-          $('#home').show();
-          $('#business').hide();
-        } else if (e.target.value == 'Business') {
-          $('#home').hide();
-          $('#business').show();
-        } else {
-          // home
-          $('#home').hide();
-          $('#business').hide();
-        }
+  <script type="text/javascript">
+    function updateStores(stores) {
+      const storesList = []
+      stores.forEach(item => {
+
       });
-      $('#business').hide();
+    }
+    $(document).ready(function() {
+      queryAllStores().then(res => {
+          if(!res || !res.data) {
+            showModal('Error', 'Services are not available, please try it again', 'Got it');  
+            return;
+          }
+          updateStores(res.data);
+      });
     });
   </script>
 
