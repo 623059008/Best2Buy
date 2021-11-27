@@ -138,7 +138,7 @@ class RegionService extends Service {
             };
         }
         console.log(`[service.product.rankByVOR] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
-        return { success: true, ...res }
+        return { success: true, data: res }
     }
 
     // rank regions by sales volumn
@@ -152,7 +152,7 @@ class RegionService extends Service {
             };
         }
         console.log(`[service.product.rankByVOR] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
-        return { success: true, ...res }
+        return { success: true, data: res }
     }
 }
 
