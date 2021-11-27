@@ -22,6 +22,11 @@ module.exports = app => {
     router.post('/updateProduct', controller.product.updateProduct);
     router.post('/insertProduct', controller.product.insertProduct);
     router.post('/deleteProduct', controller.product.deleteProduct);
+    router.post('/querySalesInfo', controller.product.querySalesInfo);
+    router.post('/rankByV', controller.product.rankByV);
+    router.post('/rankByP', controller.product.rankByP);
+    router.post('/rankByVOB', controller.product.rankByVOB);
+    router.post('/queryBCByP', controller.product.queryBCByP);
 
 
     //region
@@ -29,6 +34,8 @@ module.exports = app => {
     router.post('/insertRegion', controller.region.insertRegion);
     router.post('/deleteRegion', controller.region.deleteRegion);
     router.post('/updateRegion', controller.region.updateRegion);
+    router.post('/rankByPOR', controller.region.rankByPOR);
+    router.post('/rankByVOR', controller.region.rankByVOR);
 
 
     //store

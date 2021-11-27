@@ -30,6 +30,22 @@ class RegionController extends Controller {
         // console.log(`[controller.region.index] ${JSON.stringify(data)}`);
         return (ctx.body = {...data });
     }
+
+    // rank region by sales volumn
+    async rankByVOR() {
+        const { ctx } = this;
+        const data = await ctx.service.region.rankByVOR(ctx.request.body);
+        // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
+        return (ctx.body = {...data });
+    }
+
+    // rank region by profit
+    async rankByPOR() {
+        const { ctx } = this;
+        const data = await ctx.service.region.rankByPOR(ctx.request.body);
+        // console.log(`[controller.product.index] ${JSON.stringify(data)}`);
+        return (ctx.body = {...data });
+    }
 }
 
 module.exports = RegionController;

@@ -38,8 +38,8 @@ class RegionService extends Service {
         if (filter.RegionID) {
             sql += ' RegionID=\'' + filter.RegionID + '\' and';
         }
-        if (filter.Keyword) {
-            sql += ' Name like \'%' + filter.Keyword + '%\' and';
+        if (filter.Name) {
+            sql += ' Name like \'%' + filter.Name + '%\' and';
         }
         if (filter.Manager) {
             sql += ' Manager = ' + JSON.stringify(filter.Manager) + ' and';
@@ -125,6 +125,34 @@ class RegionService extends Service {
         }
         console.log(`[service.region.update] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
         return { success: true, data: {...region, ...data } };
+    }
+
+    // rank regions by profit
+    async rankByPOR(data) {
+        const res = await this.app.mysql.query('select region.Name,sum(TotalGrossIncome) from transactions,salesperson,store,region where Status = \'Yes\' and SalespersonName = salesperson.Name and StoreAssigned = store.StoreID and store.Region = region.RegionID group by region.Name');
+        if (!res) {
+            return {
+                success: false,
+                errno: 1011,
+                msg: 'fail to find this product'
+            };
+        }
+        console.log(`[service.product.rankByVOR] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
+        return { success: true, ...res }
+    }
+
+    // rank regions by sales volumn
+    async rankByVOR(data) {
+        const res = await this.app.mysql.query('select region.Name,sum(NumberOfProducts) from transactions,salesperson,store,region where Status = \'Yes\' and SalespersonName = salesperson.Name and StoreAssigned = store.StoreID and store.Region = region.RegionID group by region.Name');
+        if (!res) {
+            return {
+                success: false,
+                errno: 1011,
+                msg: 'fail to find this product'
+            };
+        }
+        console.log(`[service.product.rankByVOR] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
+        return { success: true, ...res }
     }
 }
 

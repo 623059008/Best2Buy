@@ -6,11 +6,11 @@ const Service = require('egg').Service;
 
 class InventoryService extends Service {
     async find(data) {
-        const { InventoryID } = data;
+        const { StoreID, ProductID } = data;
         // select user info from inventory by username and password
         let inventory;
-        if (InventoryID) {
-            inventory = await this.app.mysql.query('select * from inventory where InventoryID = ?', [InventoryID]);
+        if (StoreID && ProductID) {
+            inventory = await this.app.mysql.query('select * from inventory where StoreID = ? and ProductID = ?', [StoreID, ProductID]);
         } else {
             return {
                 success: false,
@@ -18,7 +18,7 @@ class InventoryService extends Service {
                 msg: 'fail to get result for this info1'
             };
         }
-        console.log(`[service.inventory.find] DB: ${InventoryID} result: ${JSON.stringify(inventory)}`);
+        console.log(`[service.inventory.find] DB: ${StoreID, ProductID} result: ${JSON.stringify(StoreID,ProductID)}`);
         if (!inventory) {
             return {
                 success: false,
@@ -35,9 +35,6 @@ class InventoryService extends Service {
         const { filter = {} } = data || {};
         // select user info from inventory by username and password
         let sql = 'select * from inventory where';
-        if (filter.InventoryID) {
-            sql += ' InventoryID=\'' + filter.InventoryID + '\' and';
-        }
         if (filter.StoreID) {
             sql += ' StoreID = ' + filter.StoreID + ' and';
         }
@@ -85,8 +82,8 @@ class InventoryService extends Service {
     }
 
     async delete(data) {
-        const { InventoryID } = data;
-        const res = await this.app.mysql.query('delete from inventory where InventoryID = ?', [InventoryID]);
+        const { StoreID, ProductID } = data;
+        const res = await this.app.mysql.query('delete from inventory where StoreID = ? and ProductID = ?', [StoreID, ProductID]);
         if (!res) {
             return {
                 success: false,
@@ -99,7 +96,7 @@ class InventoryService extends Service {
 
     async update(data) {
         // update admin info
-        const inventory = await this.find({ InventoryID: data.InventoryID });
+        const inventory = await this.find({ StoreID: data.StoreID, ProductID: data.ProductID });
         if (!inventory) {
             return {
                 success: false,
@@ -114,7 +111,8 @@ class InventoryService extends Service {
             NumberOfProduct: data.NumberOfProduct || NumberOfProduct,
         }, {
             where: {
-                InventoryID: data.InventoryID
+                StoreID: data.StoreID,
+                ProductID: data.ProductID
             }
         })
         if (!res) {
