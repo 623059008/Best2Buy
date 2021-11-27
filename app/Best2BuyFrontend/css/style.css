@@ -1397,6 +1397,11 @@ a:hover .button-style.Three,
   }
 }
 
+.qty {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
 .Case-Studies {
     margin: 120px 0;

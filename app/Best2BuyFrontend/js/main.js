@@ -109,7 +109,7 @@ function queryAllProduct(filter={}) {
 }
 
 function queryAllStores(filter={}) {
-    const url = getUrl('queryStores');
+    const url = getUrl('queryStore');
     return request(url, filter).then(res => {
         console.log('stores res', res);
         if(!res || !res.success) {
@@ -160,7 +160,8 @@ function queryAllTransaction(filter={}) {
 function buyProduct(id) {
     const url = getUrl('insertTransaction');
     const CustomerID = Cookies.get('userid');
-    const data = {ProductID: id, CustomerID};
+    const qty = parseInt($('#buyqty>option:selected').val());
+    const data = {ProductID: id, NumberOfProducts: qty, CustomerID, Status: 'Yes'};
     console.log('[*] buy', data);
     return  request(url, data).then(res => {
         if(!res || !res.success) {

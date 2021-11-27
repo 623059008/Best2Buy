@@ -8,7 +8,7 @@
   <!-- For IE -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Product Details</title>
+  <title>Aggregation</title>
 
 
   <!-- Favicon -->
@@ -31,7 +31,6 @@
 <body>
 
   <div class="main-page-wrapper">
-
     <!-- Theme Main Menu ____________________________ -->
     <section class="b-seo-menu-wrapper">
       <div class="theme-main-menu">
@@ -56,11 +55,11 @@
               <!-- Brand and toggle get grouped for better mobile display -->
               <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed tran3s" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only tran3s">Toggle navigation</span>
-					<span class="icon-bar tran3s"></span>
-					<span class="icon-bar tran3s"></span>
-					<span class="icon-bar tran3s"></span>
-				</button>
+										<span class="sr-only tran3s">Toggle navigation</span>
+										<span class="icon-bar tran3s"></span>
+										<span class="icon-bar tran3s"></span>
+										<span class="icon-bar tran3s"></span>
+									</button>
               </div>
 
               <!-- Collect the nav links, forms, and other content for toggling -->
@@ -82,17 +81,18 @@
       </div>
       <!-- /.main-menu -->
     </section>
+    <!-- /.b-seo-menu-wrapper -->
 
     <!-- Theme Inner Banner ____________________________ -->
     <section class="short-theme-banner">
-      <div class="inner-banner-opacity-two">
+      <div class="inner-banner-opacity">
         <div class="container">
           <div class="inner-banner-title">
-            <h1>Product Details</h1>
+            <h1>Aggregation</h1>
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><span><i class="fa fa-arrow-right" aria-hidden="true"></i></span></li>
-              <li><a href="#">Product Details</a></li>
+              <li><a href="#">Aggregation</a></li>
             </ul>
           </div>
           <!-- /.inner-banner-title -->
@@ -103,15 +103,62 @@
     </section>
     <!-- /.them-inner-banner -->
 
-    <!-- Case details _________________________________ -->
-    <section class="service-section">
-      <div class="container" id="productDetails">
-        
-        <!-- /.row -->
-      </div>
-      <!-- /.container -->
+    <!-- Product Rank _________________________________ -->
+    <section class="Services-Packages">
+        <div class="container">
+            <div class="theme-title text-center">
+                <h2>Our most <span>popular</span> products</h2>
+                <span class="titleanimi"></span>
+            </div>
+            <!-- /.theme-title -->
+            <div class="services-item-wrapper" id="productRank">
+                <!-- / #services-packages-slider -->
+                <div class="rankContent">There is no data now</div>
+                <a href="/products.html" class="a-comon">Explore More <span class="button-style One"></span></a>
+            </div>
+            <!-- /.services-item-wrapper -->
+        </div>
+        <!-- /.container -->
     </section>
-    <!-- /.service-section -->
+    <!-- /.Product Rank -->
+
+    <!-- Category Rank _________________________________ -->
+    <section class="Services-Packages">
+        <div class="container">
+            <div class="theme-title text-center">
+                <h2>Our most <span>popular</span> product categories</h2>
+                <span class="titleanimi"></span>
+            </div>
+            <!-- /.theme-title -->
+            <div class="services-item-wrapper" id="kindRank">
+                <!-- / #services-packages-slider -->
+                <div class="rankContent">There is no data now</div>
+                <a href="/products.html" class="a-comon">Explore More <span class="button-style One"></span></a>
+            </div>
+            <!-- /.services-item-wrapper -->
+        </div>
+        <!-- /.container -->
+    </section>
+    <!-- /.Category Rank -->
+
+    <!-- Region Rank _________________________________ -->
+    <section class="Services-Packages">
+        <div class="container">
+            <div class="theme-title text-center">
+                <h2>Our most <span>popular</span> product categories</h2>
+                <span class="titleanimi"></span>
+            </div>
+            <!-- /.theme-title -->
+            <div class="services-item-wrapper" id="regionRank">
+                <!-- / #services-packages-slider -->
+                <div class="rankContent">There is no data now</div>
+                <a href="/regions.html" class="a-comon">Explore More <span class="button-style One"></span></a>
+            </div>
+            <!-- /.services-item-wrapper -->
+        </div>
+        <!-- /.container -->
+    </section>
+    <!-- /.Region Rank -->
 
     <!-- Footer ____________________________ -->
     <footer>
@@ -228,62 +275,110 @@
   <script src="js/jquery.cookie.js"></script>
   <script src="js/custom.js"></script>
   <script src="js/main.js"></script>
-  <script type="text/javascript">
-  function updateProductsDetail(product) {
-    if(!Array.isArray(product) || product.length != 1) {
-      showModal('Error', 'Services are not available, please try it again', 'Got it');
-      return;
-    }
-    const item = product[0];
-    const detailHtml = `
-    <div class="row">
-        <div class="col-md-4 col-xs-12">
-          <img src="${item["ImgUrl"]}" alt="products" />
-        </div>
-        <div class="col-md-8 col-xs-12 float-right">
-          <div class="service-right-side">
-            <p>
-              Product Name: <h3>${item['Name']}</h3>
-              <br />
-              Product Price: <h4>${item["Price"]}$</h4>
-              <br />
-              Category: <h4><span>${item["ProductKind"]}</span></h4>
-              <br />
-              Inventory Amount: <h4>${item["InventoryAmount"]}</h4>
-            </p>
-            <div class="qty">
-              <label for="number">Qty: </label>
-              <select name="number" id="buyqty">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-            <button class="buy hvr-float-shadow" onclick="buyProduct(${item["ProductID"]})" id="buy">Buy It</button>
-          </div>
-          <!-- /.service-right-side -->
-        </div>
-        <!-- /.col -->
+  <script type='text/javascript'>
+        function updateKindRank(kind) {
+            const rankItemList = [];
+            for(let i=1;i++;i<kind.length+1) {
+                const rankItem  = `
+                <div>
+                    <div class="services-item">
+                        <div class="services-img">
+                            <img src="" alt="">
+                            <div class="">
+                                <img src="" alt="">
+                                <h5><a href="#">${kind[i-1]["ProductKind"]}</a></h5>
+                            </div>
+                        </div>
+                        <div class="services-text text-center">
+                            <h6>0${i}</h6>
+                            <h5>${kind[i-1]["ProductKind"]}</h5>
+                        </div>
+                    </div>
+                    <!-- /.services-item -->
+                </div>
+                `;
+                rankItemList.push(rankItem);
+            }
 
-        
-        <!-- /.col -->
-      </div>`;
-    $("#productDetails").empty();
-    $("#productDetails").append(detailHtml);
-  }
-	$(document).ready(function() {
-		const ProductID = getQueryVariable('id');
-		queryAllProduct({ProductID}).then(res=>{
-			if(!res || !res.data) {
-					showModal('Error', 'Services are not available, please try it again', 'Got it');
-					return;
-				}
-			updateProductsDetail(res.data);
-		});
-	});
-  </script>
+            $("#kindRank").empty();
+            $('#kindRank').append(rankItemList.join('\n'));
+        }
+        function updateProductRank(product) {
+            const rankItemList = [];
+            for(let i=1;i++;i<product.length + 1) {
+                const rankItem  = `
+                <div>
+                    <div class="services-item">
+                        <div class="services-img">
+                            <img src="" alt="">
+                            <div class="">
+                                <img src="" alt="">
+                                <h5><a href="#">${product[i-1]["ProductKind"]}</a></h5>
+                            </div>
+                        </div>
+                        <div class="services-text text-center">
+                            <h6>0${i}</h6>
+                            <h5>${product[i-1]["ProductKind"]}</h5>
+                        </div>
+                    </div>
+                    <!-- /.services-item -->
+                </div>
+                `;
+                rankItemList.push(rankItem);
+            }
+             $("#productRank").empty();
+            $('#productRank').append(rankItemList.join('\n'));
+        }
+        function updateRegionRank(data) {
+            const rankItemList = [];
+            for(let i=1;i++;i<data.length + 1) {
+                const rankItem  = `
+                <div>
+                    <div class="services-item">
+                        <div class="services-img">
+                            <img src="" alt="">
+                            <div class="">
+                                <img src="" alt="">
+                                <h5><a href="#">${data[i-1]["Profit"]}</a></h5>
+                            </div>
+                        </div>
+                        <div class="services-text text-center">
+                            <h6>0${i}</h6>
+                            <h5>${data[i-1]["Profit"]}</h5>
+                        </div>
+                    </div>
+                    <!-- /.services-item -->
+                </div>
+                `;
+                rankItemList.push(rankItem);
+            }
+            $("#regionRank").empty();
+            $('#regionRank').append(rankItemList.join('\n'));
+        }
+        $(document).ready(function() {
+            let url = getUrl('rankByV');
+            request(url,{}).then(res=>{
+                if(!res || !res.data) {
+                    return;
+                }
+                updateKindRank(res.data);
+            });
+            url = getUrl('rankByP');
+            request(url,{}).then(res=>{
+                if(!res || !res.data) {
+                    return;
+                }
+                updateProductRank(res.data);
+            });
+            url = getUrl('rankByPOR');
+            request(url,{}).then(res=>{
+                if(!res || !res.data) {
+                    return;
+                }
+                updateRegionRank(res.data);
+            });
+        });
+    </script>
 
 </body>
 

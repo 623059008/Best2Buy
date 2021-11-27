@@ -8,7 +8,7 @@
   <!-- For IE -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Profile</title>
+  <title>Stores</title>
 
 
   <!-- Favicon -->
@@ -107,11 +107,11 @@
         <section class="our-blog-section">
             <div class="container">
                 <div class="theme-title text-center">
-                    <h2>Our stores<br>in different <span>Regions</span></h2>
+                    <h2>Our <span>Stores</span></h2>
                     <span class="titleanimi"></span>
                 </div>
                 <!-- /.theme-title -->
-                <div class="row">
+                <div class="row" id="stores">
                     <div class="col-md-4 col-sm-6 col-xs-12">
                         <div class="blog-item">
                             <div class="blog-img">
@@ -283,8 +283,30 @@
     function updateStores(stores) {
       const storesList = []
       stores.forEach(item => {
-
+        const addr = item['Address'].split(' ');
+        let rest = '';
+        for(let i=1; i<addr.length; i++) {
+          rest += addr[i]+ ' ';
+        }
+        storesList.push(`
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="blog-item">
+                <div class="blog-img">
+                    <img src="images/blog/store-${parseInt(Math.random()*2)+1}.png" alt="image">
+                </div>
+                <!-- /.blog-img -->
+                <div class="blog-title-text">
+                    <h6><b>${addr[0]}</b> <span>${rest}</span></h6>
+                    <h4>Manager: ${item['Manager']}<br /> Number of Sales Person: ${item['NumberOfSalespersons']}</h4>
+                </div>
+                <!-- /.blog-title-text -->
+            </div>
+            <!-- /.blog-item -->
+        </div>
+        `);
       });
+      $('#stores').empty();
+      $('#stores').append(storesList.join(','));
     }
     $(document).ready(function() {
       queryAllStores().then(res => {

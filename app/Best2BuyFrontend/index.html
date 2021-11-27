@@ -164,7 +164,7 @@
         </section>
         <!-- /.check-up-website -->
 
-        <!-- Services Packages _________________________________ -->
+        <!-- Product Rank _________________________________ -->
         <section class="Services-Packages">
             <div class="container">
                 <div class="theme-title text-center">
@@ -181,9 +181,9 @@
             </div>
             <!-- /.container -->
         </section>
-        <!-- /.Services-Packages -->
+        <!-- /.Product Rank -->
 
-        <!-- Services Packages _________________________________ -->
+        <!-- Category Rank _________________________________ -->
         <section class="Services-Packages">
             <div class="container">
                 <div class="theme-title text-center">
@@ -200,7 +200,26 @@
             </div>
             <!-- /.container -->
         </section>
-        <!-- /.Services-Packages -->
+        <!-- /.Category Rank -->
+
+        <!-- Region Rank _________________________________ -->
+        <section class="Services-Packages">
+            <div class="container">
+                <div class="theme-title text-center">
+                    <h2>Our most <span>popular</span> product categories</h2>
+                    <span class="titleanimi"></span>
+                </div>
+                <!-- /.theme-title -->
+                <div class="services-item-wrapper" id="regionRank">
+                    <!-- / #services-packages-slider -->
+                    <div class="rankContent">There is no data now</div>
+                    <a href="/regions.html" class="a-comon">Explore More <span class="button-style One"></span></a>
+                </div>
+                <!-- /.services-item-wrapper -->
+            </div>
+            <!-- /.container -->
+        </section>
+        <!-- /.Region Rank -->
 
 
         <!-- Free SEo Consultation _________________________________ -->
@@ -222,6 +241,7 @@
             <!-- /.opacity -->
         </section>
         <!-- /.free-seo-consultation -->
+        
 
         <!-- Our Blog _________________________________ -->
         <section class="our-blog-section">
@@ -316,7 +336,6 @@
 
                     <div class="col-md-3 col-xs-12 footer-list">
                         <h5>Short Link</h5>
-
                         <ul>
                             <li><a href="#" class="tran3s">Content Management</a></li>
                             <li><a href="#" class="tran3s">SEO Services</a></li>
@@ -399,7 +418,7 @@
     <script src="js/jquery.cookie.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/main.js"></script>
-    <script>
+    <script type='text/javascript'>
         function updateKindRank(kind) {
             const rankItemList = [];
             for(let i=1;i++;i<kind.length+1) {
@@ -453,28 +472,53 @@
              $("#productRank").empty();
             $('#productRank').append(rankItemList.join('\n'));
         }
+        function updateRegionRank(data) {
+            const rankItemList = [];
+            for(let i=1;i++;i<data.length + 1) {
+                const rankItem  = `
+                <div>
+                    <div class="services-item">
+                        <div class="services-img">
+                            <img src="" alt="">
+                            <div class="">
+                                <img src="" alt="">
+                                <h5><a href="#">${data[i-1]["Profit"]}</a></h5>
+                            </div>
+                        </div>
+                        <div class="services-text text-center">
+                            <h6>0${i}</h6>
+                            <h5>${data[i-1]["Profit"]}</h5>
+                        </div>
+                    </div>
+                    <!-- /.services-item -->
+                </div>
+                `;
+                rankItemList.push(rankItem);
+            }
+            $("#regionRank").empty();
+            $('#regionRank').append(rankItemList.join('\n'));
+        }
         $(document).ready(function() {
             let url = getUrl('rankByV');
             request(url,{}).then(res=>{
                 if(!res || !res.data) {
                     return;
                 }
-                if(res.data.length<3){
-                    updateKindRank(res.data);
-                } else {
-                    updateKindRank([res.data[0],res.data[1],res.data[2]]);
-                }
+                updateKindRank(res.data);
             });
             url = getUrl('rankByP');
             request(url,{}).then(res=>{
                 if(!res || !res.data) {
                     return;
                 }
-                if(res.data.length<3){
-                    updateProductRank(res.data);
-                } else {
-                    updateProductRank([res.data[0],res.data[1],res.data[2]]);
+                updateProductRank(res.data);
+            });
+            url = getUrl('rankByPOR');
+            request(url,{}).then(res=>{
+                if(!res || !res.data) {
+                    return;
                 }
+                updateRegionRank(res.data);
             });
         });
     </script>
