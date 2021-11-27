@@ -2511,6 +2511,15 @@ footer .bottom-footer ul>li>a {
 .transaction-card > table > tbody> tr {
     border-bottom: 1px solid #999;
 }
+
+.rankContent {
+    display: flex;
+    flex-direction: column;;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 32px;
+}
 /*============================== Our Trusted Client =================================*/
 
 .Our-Trusted-Client {
