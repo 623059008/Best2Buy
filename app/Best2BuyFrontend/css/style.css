@@ -1397,10 +1397,48 @@ a:hover .button-style.Three,
   }
 }
 
+.manage-btn {
+    margin-top: .5em;
+    width: 6em;
+    line-height: 1.5em;
+    background: #39a96f;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 400;
+    font-family: 'PT Sans Caption', sans-serif;
+    color: #eee;
+    margin-bottom: .8em;
+    padding: 0px .6em;
+    border-radius: 0.24em;
+}
+
 .qty {
     width: 100%;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.pulldown-ul {
+    overflow: hidden;
+    height: 60px;
+    transition: height 0.2s ,border 0.2s linear;
+    -moz-transition:height 0.2s ,border 0.2s linear;
+    /* Safari and Chrome */
+    -webkit-transition:height 0.2s ,border 0.2s linear;
+    /* Opera */
+    -o-transition:height 0.2s ,border 0.2s linear;
+    color: #000;
+}
+.pulldown-ul:hover {
+    height: auto;
+}
+.pulldown-ul li a {
+    color: #fff;
+    font-size: 0.8em;
+}
+
+.pulldown-ul li a:hover {
+    color: #000;
 }
 
 .Case-Studies {

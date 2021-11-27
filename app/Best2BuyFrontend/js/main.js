@@ -4,12 +4,17 @@ const baseUrl = '/';
 const infoText = {
   'networkError': 'Services are not available, please try it again',
   'buyError': 'Unable to send transaction, please try it again',
+  'deleteError': 'Unable to send delete operation, please try it again',
+  'deleteSuccess': 'Delete successfully!',
+  'deleteConfirm': '[DANGER] Do you really want to delete this record?',
   'loginError': 'Username and Password are required!',
   'loginError2': 'Fail to login by this information',
   'registryError': 'Required fields must be completed',
   'registryError2': 'Repeat password is not identical with password',
   'buySuccess': 'Order has been placed successfully!',
   'Got': ' Got it',
+  'confirm': 'I confirm',
+  'cancel': 'Cancel',
 };
 
 function getQueryVariable(variable) {
@@ -157,19 +162,64 @@ function queryAllTransaction(filter={}) {
     });
 }
 
-function buyProduct(id) {
+function buyProduct(data) {
     const url = getUrl('insertTransaction');
     const CustomerID = Cookies.get('userid');
     const qty = parseInt($('#buyqty>option:selected').val());
-    const data = {ProductID: id, NumberOfProducts: qty, CustomerID, Status: 'Yes'};
+    
+    data = {...data, ProductID: id, NumberOfProducts: qty, CustomerID, Status: 'Yes', SalespersonName, ProductID, ProductsName, ProductsPrice, TotalGrossIncome};
     console.log('[*] buy', data);
     return  request(url, data).then(res => {
         if(!res || !res.success) {
             showModal('Error', infoText['buyError'], infoText['Got']);
+            return;
         }
         showModal('Info', infoText['buySuccess'], infoText['Got']);
     });
 }
+
+function deleteProduct(ProductID) {
+    const okFunc = ()=>{
+        const url = getUrl('deleteProduct');
+        request(url, {ProductID}).then(res => {
+            if(!res || !res.success) {
+                showModal('Error', infoText['deleteError'], infoText['Got']);
+                return;
+            }
+            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
+        });
+    }
+    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
+}
+
+function deleteStore(StoreID) {
+    const okFunc = ()=>{
+        const url = getUrl('deleteStore');
+        request(url, {StoreID}).then(res => {
+            if(!res || !res.success) {
+                showModal('Error', infoText['deleteError'], infoText['Got']);
+                return;
+            }
+            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
+        });
+    }
+    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
+}
+
+function deleteStuff(SalesPersonID) {
+    const okFunc = ()=>{
+        const url = getUrl('deleteSalesPerson');
+        request(url, {SalesPersonID}).then(res => {
+            if(!res || !res.success) {
+                showModal('Error', infoText['deleteError'], infoText['Got']);
+                return;
+            }
+            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
+        });
+    }
+    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
+}
+
 
 function queryProductByKeyword() {
     const value = $("#product-keyword").val();
@@ -190,7 +240,7 @@ function login() {
         return;
     }
     request(url, {
-        Name: name,
+        Email: name,
         Password: password,
     }).then(res => {
         console.log('[*] login', res);
@@ -215,6 +265,8 @@ function login() {
 
 function reigster() {
     const url = getUrl('signup');
+    const Email = $('#email').val();
+    const Tel = $('#tel').val();
     const name = $("#username").val();
     const password = $("#password").val();
     const repassword = $("#repassword").val();
@@ -230,7 +282,7 @@ function reigster() {
     const MarriageStatus = $("#MarriageStatus").val();
     const Income = $("#Income").val();
 
-    if(!name || !password || !repassword || !street || !city || !state || !zipcode) {
+    if(!Email || !Tel || !name || !password || !repassword || !street || !city || !state || !zipcode) {
         showModal('Info', infoText['registryError'], infoText['Got']);
         return;
     }
@@ -259,7 +311,9 @@ function reigster() {
         Gender,
         Age,
         MarriageStatus,
-        Income
+        Income,
+        Email,
+        Tel,
     }).then(res => {
         console.log('[*] registry', res);
         if(!res || !res.success) {
@@ -276,20 +330,19 @@ function showlostpassword() {
 }
 
 $(document).ready(function(){
-    console.log('Cookie', Cookies.get('username'), Cookies.get('userid'), Cookies.get('userrole'));
     const role = Cookies.get('userrole') || 'Home';
     if(Cookies.get('username') && Cookies.get('userid')) {
         if (role !== 'Administrator') {
-            $('#login-buttn').empty();
-            $('#login-buttn').attr('href','#');
-            $('#login-buttn').append(`<span>Welcome ${Cookies.get('username')}</span>`);
-            $('#login-buttn').mouseenter(function(){
-                $('#login-buttn>span').text('Logout');
+            $('#login-button').empty();
+            $('#login-button').attr('href','#');
+            $('#login-button').append(`<span>Welcome ${Cookies.get('username')}</span>`);
+            $('#login-button').mouseenter(function(){
+                $('#login-button>span').text('Logout');
             });
-            $('#login-buttn').mouseleave(function(){
-                $('#login-buttn>span').text(`Welcome ${Cookies.get('username')}`);
+            $('#login-button').mouseleave(function(){
+                $('#login-button>span').text(`Welcome ${Cookies.get('username')}`);
             });
-            $('#login-buttn').click(function(){
+            $('#login-button').click(function(){
                 Cookies.set('username', '');
                 Cookies.set('userid', '');
                 Cookies.set('userdata', '');
@@ -297,15 +350,24 @@ $(document).ready(function(){
             });
         } else {
             const adminHtml = `
-                <ul>
-                    <li><a href="/product_manage.html">Product Management</a></li>
-                    <li><a href="/store_manage.html">Product Management</a></li>
-                    <li><a href="/salesperson_manage.html">Product Management</a></li>
+                <ul class="pulldown-ul">
+                    <li><a href="#">Welcome, Admin</a></li>
+                    <li><a href="/product-manage.html">Product Management</a></li>
+                    <li><a href="/store-manage.html">Store Management</a></li>
+                    <li><a href="/salesperson-manage.html">Staff Management</a></li>
                 </ul>
             `;
             $('#login-button').empty();
             $('#login-button').append(adminHtml);
         }
-
+    }
+    console.log(location.url)
+    if(role !== 'Administrator') {
+        const url = location.href.split('//')[1];
+        const pageName = url.split('/')[1].split('.')[0];
+        authList =  ['product-manage', 'store-manage', 'salesperson-manage']
+        if(authList.includes(pageName)) {
+            location.href = 'index.html';
+        }
     }
 });

@@ -8,7 +8,7 @@
   <!-- For IE -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Product Manage Page</title>
+  <title>Product Management Page</title>
 
 
   <!-- Favicon -->
@@ -41,7 +41,7 @@
             <div class="float-right search-button-content">
               <div class="clear-fix">
                 <!-- /.search-box -->
-                <a id='login-buttn' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
+                <a id='login-button' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
               </div>
               <!-- /.right-content -->
             </div>
@@ -88,11 +88,11 @@
       <div class="inner-banner-opacity">
         <div class="container">
           <div class="inner-banner-title">
-            <h1>Products</h1>
+            <h1>Products Management</h1>
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><span><i class="fa fa-arrow-right" aria-hidden="true"></i></span></li>
-              <li><a href="#">Products</a></li>
+              <li><a href="#">Products Management</a></li>
             </ul>
           </div>
           <!-- /.inner-banner-title -->
@@ -265,14 +265,15 @@
         productHtmlItem.push(
           `<div class="col-sm-3 col-xs-6">
 						<div class="Case-Studies-item">
-							<img onclick="location.href='product-details.html?id=${item['ProductID']}'" src="${item["ImgUrl"]}" alt=${item['Name']}>
+							<img onclick="location.href='product-detail-manage.html?id=${item['ProductID']}'" src="${item["ImgUrl"]}" alt=${item['Name']}>
 							<div class="case-item-opacity">
 								<span class=".titleanimi"></span>
 							</div>
-							<div class="case-item-description">
+							<div class="case-item-description" style="height: auto;">
 								<h4><a href="product-detail-manage.html?id=${item['ProductID']}">${item['Name']}</a></h4>
 								<h3>$${item['Price']}</h3>
 								<h6>${item['ProductKind']}</h6>
+                <button class='manage-btn hvr-float-shadow' onclick="deleteProduct(${item['ProductID']})">Delete</button>
 							</div>
 						</div> <!-- /.Case-Studies-item -->
 					</div>`);

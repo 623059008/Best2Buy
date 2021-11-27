@@ -40,7 +40,7 @@
                         <div class="float-right search-button-content">
                             <div class="clear-fix">
                                 <!-- /.search-box -->
-                                <a id='login-buttn' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
+                                <a id='login-button' href="/login.html" class="menu-button a-comon hvr-bounce-to-right">Login</a>
                             </div>
                             <!-- /.right-content -->
                         </div>
@@ -421,12 +421,12 @@
     <script type='text/javascript'>
         function updateKindRank(kind) {
             const rankItemList = [];
-            for(let i=1;i++;i<kind.length+1) {
+            for(let i=1;i<Math.min(4,kind.length+1); i++) {
                 const rankItem  = `
                 <div>
                     <div class="services-item">
                         <div class="services-img">
-                            <img src="" alt="">
+                            <img src="https://m.media-amazon.com/images/I/61+wn86fYMS._AC_UL640_FMwebp_QL65_.jpg" alt="">
                             <div class="">
                                 <img src="" alt="">
                                 <h5><a href="#">${kind[i-1]["ProductKind"]}</a></h5>
@@ -448,12 +448,12 @@
         }
         function updateProductRank(product) {
             const rankItemList = [];
-            for(let i=1;i++;i<product.length + 1) {
+            for(let i=1;i<Math.min(4,product.length+1);i++) {
                 const rankItem  = `
                 <div>
                     <div class="services-item">
                         <div class="services-img">
-                            <img src="" alt="">
+                            <img src="https://m.media-amazon.com/images/I/71knjo3Uz4L._AC_UY436_FMwebp_QL65_.jpg" alt="">
                             <div class="">
                                 <img src="" alt="">
                                 <h5><a href="#">${product[i-1]["ProductKind"]}</a></h5>
@@ -461,7 +461,7 @@
                         </div>
                         <div class="services-text text-center">
                             <h6>0${i}</h6>
-                            <h5>${product[i-1]["ProductKind"]}</h5>
+                            <h5>${product[i-1]["ProductKind"]}, Gross: ${product[i-1]["P"]}</h5>
                         </div>
                     </div>
                     <!-- /.services-item -->
@@ -474,20 +474,20 @@
         }
         function updateRegionRank(data) {
             const rankItemList = [];
-            for(let i=1;i++;i<data.length + 1) {
+            for(let i=1;i<Math.min(4,data.length+1);i++) {
                 const rankItem  = `
                 <div>
                     <div class="services-item">
                         <div class="services-img">
-                            <img src="" alt="">
+                            <img src="images/blog/store-${i}.png" alt="">
                             <div class="">
                                 <img src="" alt="">
-                                <h5><a href="#">${data[i-1]["Profit"]}</a></h5>
+                                <h5><a href="#">${data[i-1]["Name"]}</a></h5>
                             </div>
                         </div>
                         <div class="services-text text-center">
                             <h6>0${i}</h6>
-                            <h5>${data[i-1]["Profit"]}</h5>
+                            <h5>${data[i-1]["Name"]}, Profit: ${data[i-1]["sum(TotalGrossIncome)"]}</h5>
                         </div>
                     </div>
                     <!-- /.services-item -->
