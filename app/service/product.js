@@ -150,12 +150,12 @@ class ProductService extends Service {
             };
         }
         console.log(`[service.product.querySAndP] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
-        return { success: true, ...res }
+        return { success: true, data: res }
     }
 
     //rank product category by sales volumn
     async rankByV(data) {
-        const res = await this.app.mysql.query('select ProductKind from transactions where Status = \'Yes\' order by NumberOfProducts desc');
+        const res = await this.app.mysql.query('select ProductKind,sum(NumberOfProducts) as S from transactions where Status = \'Yes\' group by ProductKind order by S desc');
         if (!res) {
             return {
                 success: false,
@@ -164,12 +164,12 @@ class ProductService extends Service {
             };
         }
         console.log(`[service.product.rankByV] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
-        return { success: true, ...res }
+        return { success: true, data: res }
     }
 
     //rank product category by profit
     async rankByP(data) {
-        const res = await this.app.mysql.query('select ProductKind from transactions where Status = \'Yes\' order by TotalGrossIncome desc');
+        const res = await this.app.mysql.query('select ProductKind,sum(TotalGrossIncome) as P from transactions where Status = \'Yes\' group by ProductKind order by P desc');
         if (!res) {
             return {
                 success: false,
@@ -178,7 +178,7 @@ class ProductService extends Service {
             };
         }
         console.log(`[service.product.rankByP] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
-        return { success: true, ...res }
+        return { success: true, data: res }
     }
 
     // rank product by sales volumm associated with business customers
@@ -192,7 +192,7 @@ class ProductService extends Service {
             };
         }
         console.log(`[service.product.rankByV] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
-        return { success: true, ...res }
+        return { success: true, data: res }
     }
 
     // query business customer who buy given product most
@@ -207,7 +207,7 @@ class ProductService extends Service {
             };
         }
         console.log(`[service.product.querySAndP] DB: ${JSON.stringify(data)} res:${JSON.stringify(res)}`);
-        return { success: true, ...res }
+        return { success: true, data: res }
     }
 
 }
