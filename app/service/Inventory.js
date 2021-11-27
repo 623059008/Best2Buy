@@ -95,16 +95,15 @@ class InventoryService extends Service {
     }
 
     async update(data) {
-        // update admin info
-        const inventory = await this.find({ StoreID: data.StoreID, ProductID: data.ProductID });
-        if (!inventory) {
+        const inventory = await this.find(data);
+        if (!inventory || !inventory.success) {
             return {
                 success: false,
                 errno: 1003,
                 msg: 'fail to update'
             };
         }
-        const { StoreID, ProductID, NumberOfProduct } = inventory;
+        const { StoreID, ProductID, NumberOfProduct } = inventory.data;
         const res = await this.app.mysql.update('inventory', {
             StoreID: data.StoreID || StoreID,
             ProductID: data.ProductID || ProductID,

@@ -132,7 +132,7 @@ class AdminService extends Service {
      */
     async update(data) {
         // update admin info
-        const { CustomerID: cid, Kind } = data;
+        const { Kind } = data;
         const usr = await this.find(data);
         if (!usr) {
             return {
