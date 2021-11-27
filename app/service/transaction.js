@@ -12,11 +12,8 @@ class RecordService extends Service {
         if (filter.ProductKind) {
             sql += ' ProductKind=\'' + filter.ProductKind + '\' and';
         }
-        if (filter.Keyword) {
-            sql += ' ProductsName like \'%' + filter.Keyword + '%\' and';
-        }
-        if (filter.OrderNumber) {
-            sql += ' OrderNumber = ' + filter.OrderNumber + ' and';
+        if (filter.ProductsName) {
+            sql += ' ProductsName like \'%' + filter.ProductsName + '%\' and';
         }
         if (filter.OrderNumber) {
             sql += ' OrderNumber = ' + filter.OrderNumber + ' and';

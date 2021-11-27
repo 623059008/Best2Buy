@@ -16,12 +16,12 @@ class AdminController extends Controller {
     async signin() {
         const { ctx } = this;
 
-        const { Password, Name } = ctx.request.body;
-        if (!Password || !Name) {
+        const { Password, Email } = ctx.request.body;
+        if (!Password || !Email) {
             console.log(`[controller.admin.signin] ${JSON.stringify(ctx.request.body)}`);
             return (ctx.body = { message: 'Invalid Parameters' });
         }
-        const data = await ctx.service.admin.signin({ Password, Name });
+        const data = await ctx.service.admin.signin({ Password, Email });
         console.log(`[controller.admin.signin] ${JSON.stringify(data)}`);
         return (ctx.body = {...data });
     }
