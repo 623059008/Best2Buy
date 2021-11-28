@@ -229,27 +229,38 @@
   <script src="js/custom.js"></script>
   <script src="js/main.js"></script>
   <script type="text/javascript">
+  var ProductDetail = {};
   function updateProductsDetail(product) {
-    if(!Array.isArray(product) || product.length != 1) {
-      showModal('Error', 'Services are not available, please try it again', 'Got it');
-      return;
-    }
-    const item = product[0];
+    let storeList = [];
+    product.Stores.forEach(item=> {
+      storeList.push(`
+        <option value="${item["StoreID"]}">${item["StoreID"]}, ${item["Address"]}</option>
+      `);
+    })
+    let salesperson = [];
+    product.SalesPerson.forEach(item => {
+      if(item.StoreAssigned !== product.Stores[0].StoreID){
+        return;
+      }
+      salesperson.push(`
+      <option value="${item["SalesPersonID"]}">${item["SalesPersonID"]}, ${item["Name"]}</option>
+      `);
+    });
     const detailHtml = `
     <div class="row">
         <div class="col-md-4 col-xs-12">
-          <img src="${item["ImgUrl"]}" alt="products" />
+          <img src="${product["ImgUrl"]}" alt="products" />
         </div>
         <div class="col-md-8 col-xs-12 float-right">
           <div class="service-right-side">
             <p>
-              Product Name: <h3>${item['Name']}</h3>
+              Product Name: <h3>${product['ProductID']}.  ${product['Name']}</h3>
               <br />
-              Product Price: <h4>${item["Price"]}$</h4>
+              Product Price: <h4>${product["Price"]}$</h4>
               <br />
-              Category: <h4><span>${item["ProductKind"]}</span></h4>
+              Category: <h4><span>${product["ProductKind"]}</span></h4>
               <br />
-              Inventory Amount: <h4>${item["InventoryAmount"]}</h4>
+              Region: <h4><span id="region">-</span></h4>
             </p>
             <div class="qty">
               <label for="number">Qty: </label>
@@ -261,7 +272,19 @@
                 <option value="5">5</option>
               </select>
             </div>
-            <button class="buy hvr-float-shadow" onclick="buyProduct(${item["ProductID"]})" id="buy">Buy It</button>
+            <div class="qty">
+              <label for="store">Store: </label>
+              <select onchange="changeByStore()" name="store" id="store">${storeList.join('\n')}</select>
+            </div>
+            <p>
+              Stock in this store: <h4><span id="stock">${product["InventoryAmount"]}</span></h4>
+              Inventory Amount(All Stores): <h4>${product["InventoryAmount"]}</h4>
+            </p>
+            <div class="qty">
+              <label for="salesperson">Sales Person: </label>
+              <select name="salesperson" id="salesperson">${salesperson.join('\n')}</select>
+            </div>
+            <button class="buy hvr-float-shadow" onclick="buyProduct(${product["ProductID"]})" id="buy">Buy It</button>
           </div>
           <!-- /.service-right-side -->
         </div>
@@ -272,15 +295,38 @@
       </div>`;
     $("#productDetails").empty();
     $("#productDetails").append(detailHtml);
+    changeByStore();
+  }
+  function changeByStore() {
+    const StoreID = parseInt($('#store>option:selected').val(), 10);
+    const {SalesPerson = [], Inventory=[], Region=[], Stores} = ProductDetail;
+    const nowStore = Stores.filter(item=>item.StoreID == StoreID)[0];
+    const salesperson = [];
+    const RegionID = nowStore.Region;
+    const nowInv = Inventory.filter(item=>item.StoreID == StoreID)[0];
+    const nowReg = Region.filter(item=>item.RegionID == RegionID)[0];
+    SalesPerson.forEach(item => {
+      if(item.StoreAssigned !== StoreID){
+        return;
+      }
+      salesperson.push(`
+      <option value="${item["SalesPersonID"]}">${item["SalesPersonID"]}, ${item["Name"]}</option>
+      `);
+    });
+    $('#salesperson').empty()
+    $('#salesperson').append(salesperson.join(''));
+    $('#stock').text(nowInv.NumberOfProduct);
+    $('#region').text(nowReg.Name);
   }
 	$(document).ready(function() {
 		const ProductID = getQueryVariable('id');
-		queryAllProduct({ProductID}).then(res=>{
+		queryProductDetail({ProductID}).then(res=>{
 			if(!res || !res.data) {
 					showModal('Error', 'Services are not available, please try it again', 'Got it');
 					return;
 				}
-			updateProductsDetail(res.data);
+        ProductDetail = res.data;
+			  updateProductsDetail(res.data);
 		});
 	});
   </script>

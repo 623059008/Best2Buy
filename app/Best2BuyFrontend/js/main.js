@@ -11,6 +11,7 @@ const infoText = {
   'loginError2': 'Fail to login by this information',
   'registryError': 'Required fields must be completed',
   'registryError2': 'Repeat password is not identical with password',
+  'registrySuccess': 'Your Account has been created successfully',
   'buySuccess': 'Order has been placed successfully!',
   'InsertFail': 'Unable to insert, please try it again',
   'InsertSuccess': 'Insert Successfully',
@@ -78,7 +79,7 @@ function showModal(title = 'Info', content = '', btn1 = 'Ok', btn1Fn = null, btn
   window.btn2Fn = btn2Fn;
   $('#info-modal').remove();
   const modalHtml = `
-    <div id="info-modal" class="modal" tabindex="-1" role="dialog">
+    <div id="info-modal" class="modal" tabindex="-1" role="dialog" style="z-index:11999">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -108,7 +109,17 @@ const getUrl = (api) => {
 function queryAllProduct(filter={}) {
     const url = getUrl('queryProduct');
     return request(url, filter).then(res => {
-        console.log('product res', res);
+        if(!res || !res.success) {
+            showModal('Error', infoText['networkError'], infoText['Got']);
+            return null;
+        }
+        return res;
+    });
+}
+
+function queryProductDetail(filter ={}) {
+    const url = getUrl('queryDetail');
+    return request(url, filter).then(res => {
         if(!res || !res.success) {
             showModal('Error', infoText['networkError'], infoText['Got']);
             return null;
@@ -166,19 +177,23 @@ function queryAllTransaction(filter={}) {
     });
 }
 
-function buyProduct(data) {
+function buyProduct(ProductID) {
     const url = getUrl('insertTransaction');
     const CustomerID = Cookies.get('userid');
     const qty = parseInt($('#buyqty>option:selected').val());
+    const StoreID = parseInt($('#store>option:selected').val(),10) 
+    const SalesPersonID = parseInt($('#salesperson>option:selected').val(),10);
     
-    data = {...data, ProductID: id, NumberOfProducts: qty, CustomerID, Status: 'Yes', SalespersonName, ProductID, ProductsName, ProductsPrice, TotalGrossIncome};
+    const data = {ProductID, NumberOfProducts: qty, CustomerID, StoreID, SalesPersonID};
     console.log('[*] buy', data);
     return  request(url, data).then(res => {
         if(!res || !res.success) {
-            showModal('Error', infoText['buyError'], infoText['Got']);
+            showModal('Error', infoText['buyError'] + '\n' + res.msg, infoText['Got']);
             return;
         }
-        showModal('Info', infoText['buySuccess'], infoText['Got']);
+        showModal('Info', infoText['buySuccess'], infoText['Got'], ()=>{
+            location.href="/profile.html#transaction";
+        });
     });
 }
 
@@ -212,6 +227,89 @@ function updateProduct() {
             return;
         }
         showModal('Info', infoText['UpdateSuccess'], infoText['Got']);
+    });
+}
+
+function updateProfile() {
+    const url = getUrl('updateUsr');
+    const CustomerID = $('#CustomerID').val();
+    const Email = $('#email').val();
+    const Tel = $('#tel').val();
+    const name = $("#username").val();
+    const password = $("#password").val();
+    const repassword = $("#repassword").val();
+    const street = $("#street").val();
+    const state = $("#state").val();
+    const city = $("#city").val();
+    const zipcode = $("#zipcode").val();
+    const Kind = Cookies.get('userrole');
+    const BusinessCategory = $("#BusinessCategory").val();
+    const GrossAnnualIncome = $("#GrossAnnualIncome").val();
+    const Gender = $("#Gender").val();
+    const Age = $("#Age").val();
+    const MarriageStatus = $("#MarriageStatus").val();
+    const Income = $("#Income").val();
+
+    if(!CustomerID || !Email || !Tel || !name || !password || !repassword || !street || !city || !state || !zipcode) {
+        showModal('Info', infoText['registryError'], infoText['Got']);
+        return;
+    }
+    if(Kind==='Home' && (!Gender || !Age || !MarriageStatus || !Income)) {
+        showModal('Info', infoText['registryError'], infoText['Got']);
+        return;
+    }
+    if(Kind==='Business' && (!BusinessCategory || !GrossAnnualIncome)) {
+        showModal('Info', infoText['registryError'], infoText['Got']);
+        return;
+    }
+    if (password!==repassword) {
+        showModal('Info', infoText['registryError2'], infoText['Got']);
+        return;
+    }
+    request(url, {
+        CustomerID,
+        Name: name,
+        Password: password,
+        Street: street,
+        State: state,
+        City: city,
+        ZipCode: zipcode,
+        Kind: Kind,
+        BusinessCategory,
+        GrossAnnualIncome,
+        Gender,
+        Age,
+        MarriageStatus,
+        Income,
+        Email,
+        Tel,
+    }).then(res => {
+        console.log('[*] updateProfile', res);
+        Cookies.set('username', name);
+        Cookies.set('userdata', JSON.stringify({
+            CustomerID,
+            Name: name,
+            Street: street,
+            State: state,
+            City: city,
+            ZipCode: zipcode,
+            Kind: Kind,
+            BusinessCategory,
+            GrossAnnualIncome,
+            Gender,
+            Age,
+            MarriageStatus,
+            Income,
+            Email,
+            Tel,
+        }));
+        if(!res || !res.success) {
+            showModal('Error', infoText['UpdateFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{
+            location.href = "/profile.html";
+        });
     });
 }
 
@@ -448,8 +546,9 @@ function reigster() {
             showModal('Error', infoText['networkError'], infoText['Got']);
             return;
         }
-        // [TODO_Check] Sign up Successfully
-        location.href = "/login.html";
+        showModal('Info', infoText['registrySuccess'], infoText['Got'], ()=>{
+            location.href = "/login.html";
+        });
     });
 }
 
@@ -457,9 +556,17 @@ function showlostpassword() {
     $("#lostpassword").show();
 }
 
+function logout() {
+    Cookies.set('username', '');
+    Cookies.set('userid', '');
+    Cookies.set('userdata', '');
+    Cookies.set('userrole', '');
+    location.href = '/index.html';
+}
+
 $(document).ready(function(){
     const role = Cookies.get('userrole') || 'Home';
-    if(Cookies.get('username') && Cookies.get('userid')) {
+    if(Cookies.get('username') && Cookies.get('userid') && Cookies.get('userid')!=='undefined') {
         if (role !== 'Administrator') {
             $('#login-button').empty();
             $('#login-button').attr('href','#');
@@ -471,10 +578,7 @@ $(document).ready(function(){
                 $('#login-button>span').text(`Welcome ${Cookies.get('username')}`);
             });
             $('#login-button').click(function(){
-                Cookies.set('username', '');
-                Cookies.set('userid', '');
-                Cookies.set('userdata', '');
-                location.href = '/index.html';
+                logout();
             });
         } else {
             const adminHtml = `
@@ -483,18 +587,17 @@ $(document).ready(function(){
                     <li><a href="/product-manage.html">Product Management</a></li>
                     <li><a href="/store-manage.html">Store Management</a></li>
                     <li><a href="/salesperson-manage.html">Staff Management</a></li>
-                    <li><a href="/customer-manage.html">Customer</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
                 </ul>
             `;
             $('#login-button').empty();
             $('#login-button').append(adminHtml);
         }
     }
-    console.log(location.url)
     if(role !== 'Administrator') {
         const url = location.href.split('//')[1];
         const pageName = url.split('/')[1].split('.')[0];
-        authList =  ['product-manage', 'store-manage', 'salesperson-manage', 'customer-manage']
+        authList =  ['product-manage', 'store-manage', 'salesperson-manage']
         if(authList.includes(pageName)) {
             location.href = 'index.html';
         }

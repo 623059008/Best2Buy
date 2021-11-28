@@ -10,6 +10,13 @@ class ProductController extends Controller {
         return (ctx.body = {...data });
     }
 
+    async queryDetail() {
+        const {ctx} = this;
+        const data = await ctx.service.product.queryDetail({filter: ctx.request.body});
+        console.log(`[controller.product.queryDetail] params: ${JSON.stringify(ctx.request.body)} res: ${JSON.stringify(data)}` );
+        return (ctx.body={...data});
+    }
+
     async updateProduct() {
         const { ctx } = this;
         const data = await ctx.service.product.update(ctx.request.body);

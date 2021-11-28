@@ -19,6 +19,7 @@ module.exports = app => {
 
 
     // product
+    router.post('/queryDetail', controller.product.queryDetail);
     router.post('/queryProduct', controller.product.queryProduct);
     router.post('/updateProduct', controller.product.updateProduct);
     router.post('/insertProduct', controller.product.insertProduct);

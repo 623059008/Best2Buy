@@ -18,6 +18,42 @@
   <link rel="stylesheet" href="css/style.css">
   <!-- responsive style sheet -->
   <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+    }
+    .title {
+      color: grey;
+      font-size: 18px;
+    }
+
+    button {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    button:hover, a:hover {
+      opacity: 0.7;
+    }
+  </style>
 
   <!-- Fix Internet Explorer ______________________________________-->
 
@@ -112,19 +148,23 @@
           </div>
           
         </div>
-        <a name="transaction"></a>
-        <div class="row" id="history">
-          <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-            <h1>History Order</h1>
-            <p>There is no order. <a href="/products.html">Visit Products</a></p>
-          </div>
-        </div>
-        
         <!-- /.row -->
       </div>
       <!-- /.container -->
     </section>
     <!-- /.about-seo-tools -->
+
+    <section class="about-seo-tools">
+      <div class="container">
+          <a name="transaction"></a>
+          <div class="row" id="history">
+            <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+              <h1>History Order</h1>
+              <p>There is no order. <a href="/products.html">Visit Products</a></p>
+            </div>
+          </div>
+      </div>
+    </section>
 
     <!-- Footer ____________________________ -->
     <footer>
@@ -265,25 +305,35 @@
 
     function updateProfile(profile, transaction) {
       const profileHtml = `
-      <div id="profile-container" class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-        <h3> Name: ${profile['Name']} </h3>
-        <h3> Kind: ${profile['Kind']} </h3>
-        <h3> Gender: ${profile['Gender'] || ''} </h3>
-        <h3> Age: ${profile['Age'] || ''} </h3>
-        <h3> MarriageStatus: ${profile['MarriageStatus']|| ''} </h3>
-        <h3> Income: ${profile['Income']|| ''} </h3>
-        <h3> State: ${profile['State']} </h3>
-        <h3> Street: ${profile['Street']} </h3>
-        <h3> ZipCode: ${profile['ZipCode']} </h3>
-        <h3> Business Category: ${profile['BusinessCategory']|| ''} </h3>
-        <h3> Gross Annual Income: ${profile['GrossAnnualIncome']|| ''} </h3>
-      </div>
+        <div class="card">
+          <img src="https://www.w3schools.com/w3images/team2.jpg" alt="John" style="width:100%">
+          <h3>${profile['Name']}</h3>
+          <p class="title">${profile['Kind']}</p>
+          <p class="title">${profile['Tel']}, ${profile['Email']}</p>
+          <p>
+            Gender: ${profile['Gender'] || 'Unknown'}
+            <br />
+            Age: ${profile['Age'] || 'Unknown'}
+            <br />
+            MarriageStatus: ${profile['MarriageStatus']|| 'Unknown'}
+            <br />
+            Income: ${profile['Income']|| 'Unknow'}
+            <br />
+            Business Category: ${profile['BusinessCategory']|| 'Unknown'}
+            <br />
+            Gross Annual Income: ${profile['GrossAnnualIncome']|| 'Unknown'}
+          </p>
+          <div style="margin: 24px 0;">
+            Address: ${profile['Street']}, ${profile['City']}, ${profile['State']}, ${profile['ZipCode']}
+          </div>
+          <p><button><a href="/profile-update.html">Update</a></button></p>
+        </div>
     `;
       const transactionOrderList = [];
       transaction.forEach(item => {
         const itemHtml = `
           <div class="transaction-card">
-          <table>
+            <table>
             <tr> <td> OrderNumber </td><td><span> ${item['OrderNumber']} </span></td> </tr>
             <tr> <td> Date </td><td><span> ${new Date(item['Date']).format("yyyy-MM-dd hh:mm:ss")}</span></td> </tr>
             <tr> <td> SalespersonName </td><td><span> ${item['SalespersonName']}</span></td> </tr>
@@ -294,8 +344,7 @@
             <tr> <td> Order Total </td><td> <span> ${item['TotalGrossIncome']}$</span></td> </tr>
             <tr> <td> Status </td><td><span> ${item['Status']}</span></td> </tr>
             </table>
-          </div>
-        </div>`;
+          </div>`;
         transactionOrderList.push(itemHtml);
       });
       if (transactionOrderList.length === 0) {

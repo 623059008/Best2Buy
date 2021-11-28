@@ -1449,7 +1449,7 @@ a:hover .button-style.Three,
 }
 .pulldown-ul li a {
     color: #fff;
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 
 .pulldown-ul li a:hover {
@@ -2524,14 +2524,13 @@ footer .bottom-footer ul>li>a {
 }
 
 #profile-container {
-    padding: .2em 2em;
+    padding: .2em 5em;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     font-size: 1em;
     color: #000;
-    
     border: 1px solid #eee;
     border-radius: .5em;
     -webkit-box-shadow: -8px -8px 46px 0px rgba(0, 0, 0, 0.2);
@@ -2540,9 +2539,12 @@ footer .bottom-footer ul>li>a {
     margin-bottom: 1.8em;
 }
 
-#profile-container > h3 {
-    line-height: 1.3em;
+#profile-container > h5 {
     font-weight: normal;
+    width: 100%;
+}
+#profile-container h5 > span {
+    float: right;
 }
 
 .transaction-card {
