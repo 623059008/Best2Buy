@@ -309,41 +309,36 @@
             <div class="container">
                 <div class="top-footer row">
                     <div class="col-md-5 col-sm-7 col-xs-12 footer-logo">
-                        <a href="#"><img src="images/them-logo/them-main-logo-2.png" alt="Logo"></a>
+                        <h3 class="gradient-title">Best2Buy</h3>
                         <span class="titleanimi"></span>
-                        <p>We provide expert SEO advice to both individuals and SEO businesses. With over 21 years of experience we’ll ensure that you’re always getting the best guidance from the top people in the entire SEO industry.</p>
+                        <p>We provide the best shopping with our powerful websites and backend.</p>
                         <ul class="icon">
-                            <li><a href="" class="tran3s"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                            <li><a href="" class="tran3s"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li><a href="" class="tran3s"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                            <li><a href="" class="tran3s"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
                     <!-- /.footer-logo -->
 
                     <div class="col-md-4 col-sm-5 col-xs-12 footer-about">
-                        <h5>About</h5>
+                        <h5>About Us</h5>
 
                         <ul>
-                            <li><i class="flaticon-placeholder"></i> 66 Nicholson North street area, New York US</li>
-                            <li><i class="flaticon-multimedia"></i> <a href="#">bseo_info@gmail.com</a></li>
-                            <li><i class="flaticon-telephone"></i> +88 01912704287</li>
+                            <li><i class="flaticon-placeholder"></i> 5562 Hobort St., Pittsburgh, PA, 15217</li>
+                            <li><i class="flaticon-multimedia"></i> <a href="#">623059008@qq.com</a></li>
+                            <li><i class="flaticon-telephone"></i> +1 4129839571</li>
                         </ul>
-                        <p>Request a free quote, Keep watch</p>
-                        <a href="#" class="a-comon">Get A Quote <span class="button-style One"></span></a>
                     </div>
                     <!-- /.footer-about -->
 
                     <div class="col-md-3 col-xs-12 footer-list">
                         <h5>Short Link</h5>
                         <ul>
-                            <li><a href="#" class="tran3s">Content Management</a></li>
-                            <li><a href="#" class="tran3s">SEO Services</a></li>
-                            <li><a href="#" class="tran3s">Social media Marketing</a></li>
-                            <li><a href="#" class="tran3s">Search Analysis</a></li>
-                            <li><a href="#" class="tran3s">Keyword Analytics</a></li>
-                            <li><a href="#" class="tran3s">Email Marketing</a></li>
-                            <li><a href="#" class="tran3s">Contact</a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s">Project Detail</a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s">Database</a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s">Backend</a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s">Frontend</a></li>
                         </ul>
                     </div>
                     <!-- /.footer-list -->
@@ -355,13 +350,7 @@
             <div class="bottom-footer">
                 <div class="container">
                     <div class="clear-fix">
-                        <p class="float-left">Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
-                        <ul class="float-right">
-                            <li><a href="#">Case Studies</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms & Condition</a></li>
-                            <li><a href="#">Faq</a></li>
-                        </ul>
+                        <p class="float-left">Copyright &copy; 2021. INFSCI 2710  All rights reserved.</p>
                     </div>
                 </div>
                 <!-- /.container -->
@@ -423,8 +412,7 @@
             const rankItemList = [];
             for(let i=1;i<Math.min(4,kind.length+1); i++) {
                 const rankItem  = `
-                <div>
-                    <div class="services-item">
+                    <div class="services-item col-md-4">
                         <div class="services-img">
                             <img src="https://m.media-amazon.com/images/I/61+wn86fYMS._AC_UL640_FMwebp_QL65_.jpg" alt="">
                             <div>
@@ -437,8 +425,6 @@
                             <h5>${kind[i-1]["ProductKind"]}</h5>
                         </div>
                     </div>
-                    <!-- /.services-item -->
-                </div>
                 `;
                 rankItemList.push(rankItem);
             }
@@ -450,22 +436,19 @@
             const rankItemList = [];
             for(let i=1;i<Math.min(4,product.length+1);i++) {
                 const rankItem  = `
-                <div>
-                    <div class="services-item">
+                    <div class="services-item col-md-4">
                         <div class="services-img">
                             <img src="https://m.media-amazon.com/images/I/71knjo3Uz4L._AC_UY436_FMwebp_QL65_.jpg" alt="">
-                            <div class="">
+                            <div>
                                 <img src="/images/home/hover-1.png" alt="">
                                 <h5><a href="#">${product[i-1]["ProductKind"]}</a></h5>
                             </div>
                         </div>
                         <div class="services-text text-center">
                             <h6>0${i}</h6>
-                            <h5>${product[i-1]["ProductKind"]}, Gross: ${product[i-1]["P"]}</h5>
+                            <h5>${product[i-1]["ProductKind"]}, Gross: ${product[i-1]["P"]}$</h5>
                         </div>
                     </div>
-                    <!-- /.services-item -->
-                </div>
                 `;
                 rankItemList.push(rankItem);
             }
@@ -476,8 +459,7 @@
             const rankItemList = [];
             for(let i=1;i<Math.min(4,data.length+1);i++) {
                 const rankItem  = `
-                <div>
-                    <div class="services-item">
+                    <div class="services-item col-md-4">
                         <div class="services-img">
                             <img src="images/blog/store-${i}.png" alt="">
                             <div class="">
@@ -487,11 +469,9 @@
                         </div>
                         <div class="services-text text-center">
                             <h6>0${i}</h6>
-                            <h5>${data[i-1]["Name"]}, Profit: ${data[i-1]["sum(TotalGrossIncome)"]}</h5>
+                            <h5>${data[i-1]["Name"]}, Profit: ${data[i-1]["sum(TotalGrossIncome)"]}$</h5>
                         </div>
                     </div>
-                    <!-- /.services-item -->
-                </div>
                 `;
                 rankItemList.push(rankItem);
             }

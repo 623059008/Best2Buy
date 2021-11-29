@@ -280,8 +280,7 @@
             const rankItemList = [];
             for(let i=1;i<Math.min(4,kind.length+1); i++) {
                 const rankItem  = `
-                <div>
-                    <div class="services-item">
+                    <div class="services-item col-md-4">
                         <div class="services-img">
                             <img src="https://m.media-amazon.com/images/I/61+wn86fYMS._AC_UL640_FMwebp_QL65_.jpg" alt="">
                             <div class="">
@@ -294,8 +293,6 @@
                             <h5>${kind[i-1]["ProductKind"]}</h5>
                         </div>
                     </div>
-                    <!-- /.services-item -->
-                </div>
                 `;
                 rankItemList.push(rankItem);
             }
@@ -307,8 +304,7 @@
             const rankItemList = [];
             for(let i=1;i<Math.min(4,product.length+1);i++) {
                 const rankItem  = `
-                <div>
-                    <div class="services-item">
+                    <div class="services-item col-md-4">
                         <div class="services-img">
                             <img src="https://m.media-amazon.com/images/I/71knjo3Uz4L._AC_UY436_FMwebp_QL65_.jpg" alt="">
                             <div class="">
@@ -321,8 +317,6 @@
                             <h5>${product[i-1]["ProductKind"]}, Gross: ${product[i-1]["P"]}</h5>
                         </div>
                     </div>
-                    <!-- /.services-item -->
-                </div>
                 `;
                 rankItemList.push(rankItem);
             }
@@ -333,8 +327,7 @@
             const rankItemList = [];
             for(let i=1;i<Math.min(4,data.length+1);i++) {
                 const rankItem  = `
-                <div>
-                    <div class="services-item">
+                    <div class="services-item col-md-4">
                         <div class="services-img">
                             <img src="images/blog/store-${i}.png" alt="">
                             <div class="">
@@ -347,8 +340,6 @@
                             <h5>${data[i-1]["Name"]}, Profit: ${data[i-1]["sum(TotalGrossIncome)"]}</h5>
                         </div>
                     </div>
-                    <!-- /.services-item -->
-                </div>
                 `;
                 rankItemList.push(rankItem);
             }

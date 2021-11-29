@@ -602,4 +602,57 @@ $(document).ready(function(){
             location.href = 'index.html';
         }
     }
+    const footerHtml = `
+    <div class="container">
+                <div class="top-footer row">
+                    <div class="col-md-5 col-sm-7 col-xs-12 footer-logo">
+                        <h3 class="gradient-title">Best2Buy</h3>
+                        <span class="titleanimi"></span>
+                        <p>We provide the best shopping with our powerful websites and backend.</p>
+                        <ul class="icon">
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                            <li><a href="https://github.com/623059008/Best2Buy" class="tran3s"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- /.footer-logo -->
+
+                    <div class="col-md-4 col-sm-5 col-xs-12 footer-about">
+                        <h5>About Us</h5>
+
+                        <ul>
+                            <li><i class="flaticon-placeholder"></i> 5562 Hobort St., Pittsburgh, PA, 15217</li>
+                            <li><i class="flaticon-multimedia"></i> 623059008@qq.com</li>
+                            <li><i class="flaticon-telephone"></i> +1 4129839571</li>
+                        </ul>
+                    </div>
+                    <!-- /.footer-about -->
+
+                    <div class="col-md-3 col-xs-12 footer-list">
+                        <h5>Short Link</h5>
+                        <ul>
+                            <li><a style="color: rgba(255, 255, 255, 0.4);font-size: 16px;" href="https://github.com/623059008/Best2Buy" class="tran3s">Project Detail</a></li>
+                            <li><a style="color: rgba(255, 255, 255, 0.4);font-size: 16px;" href="https://github.com/623059008/Best2Buy" class="tran3s">Database</a></li>
+                            <li><a style="color: rgba(255, 255, 255, 0.4);font-size: 16px;" href="https://github.com/623059008/Best2Buy" class="tran3s">Backend</a></li>
+                            <li><a style="color: rgba(255, 255, 255, 0.4);font-size: 16px;" href="https://github.com/623059008/Best2Buy" class="tran3s">Frontend</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.footer-list -->
+                </div>
+                <!-- /.top-footer -->
+            </div>
+            <!-- /.container -->
+
+            <div class="bottom-footer">
+                <div class="container">
+                    <div class="clear-fix">
+                        <p class="float-right" style="color: rgba(255, 255, 255, 0.4);font-size: 16px;">Copyright &copy; 2021. INFSCI 2710  All rights reserved.</p>
+                    </div>
+                </div>
+                <!-- /.container -->
+            </div>
+    `;
+    $('footer').empty();
+    $('footer').append(footerHtml);
 });

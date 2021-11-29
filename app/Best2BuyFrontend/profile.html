@@ -22,7 +22,7 @@
     .card {
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
       max-width: 400px;
-      margin: auto;
+      margin-bottom: 20px;
       text-align: center;
       font-family: arial;
     }
@@ -144,27 +144,18 @@
       <div class="container">
         <div class="row" id="profile">
           <div class="col-md-12 col-sm-12 col-xs-12 float-right">
-            <p>Unable to fetch your profile, please refresh this page.</p>
+            <p style="text-align: center;">Unable to fetch your profile, please refresh this page.</p>
           </div>
-          
+          <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+            <h1>History Order</h1>
+            <p style="text-align: center;">There is no order. <a href="/products.html">Visit Products</a></p>
+          </div>
         </div>
         <!-- /.row -->
       </div>
       <!-- /.container -->
     </section>
     <!-- /.about-seo-tools -->
-
-    <section class="about-seo-tools">
-      <div class="container">
-          <a name="transaction"></a>
-          <div class="row" id="history">
-            <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-              <h1>History Order</h1>
-              <p>There is no order. <a href="/products.html">Visit Products</a></p>
-            </div>
-          </div>
-      </div>
-    </section>
 
     <!-- Footer ____________________________ -->
     <footer>
@@ -218,7 +209,7 @@
       <div class="bottom-footer">
         <div class="container">
           <div class="clear-fix">
-            <p class="float-left">Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+            <p class="float-left">Copyright &copy; 2018.Company name All rights reserved.</p>
             <ul class="float-right">
               <li><a href="#">Case Studies</a></li>
               <li><a href="#">Privacy Policy</a></li>
@@ -305,7 +296,8 @@
 
     function updateProfile(profile, transaction) {
       const profileHtml = `
-        <div class="card">
+        <div class="card col-md-4 col-sm-12 col-xs-12">
+          <h3>Personal Profile</h3>
           <img src="https://www.w3schools.com/w3images/team2.jpg" alt="John" style="width:100%">
           <h3>${profile['Name']}</h3>
           <p class="title">${profile['Kind']}</p>
@@ -351,17 +343,13 @@
         transactionOrderList.push(`<p>There is no order. <a href="/products.html">Visit Products</a></p>`);
       }
       const transactionHtml = `
-    <div class="col-md-8 col-sm-8 col-xs-8 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-          <h3>History Order</h3>
-          
-          ${transactionOrderList.join('\n')}
-          
-    </div>
+      <div class="col-md-8 col-sm-12 col-xs-12">
+            <h3>History Order</h3>
+            ${transactionOrderList.join('\n')}
+      </div>
     `;
       $('#profile').empty();
-      $("#history").empty();
-      $('#profile').append(profileHtml);
-      $("#history").append(transactionHtml);
+      $('#profile').append(profileHtml, transactionHtml);
     }
     $(document).ready(function() {
       let userdata = Cookies.get('userdata');
