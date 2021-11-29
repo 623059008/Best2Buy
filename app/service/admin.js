@@ -27,7 +27,7 @@ class AdminService extends Service {
     }
 
     // console.log(`[service.admin.find] DB: ${uid} ${email}, ${realname}, ${birthday} result: ${JSON.stringify(admin)}`);
-    if (!usr || usr.length == 0) {
+    if (!usr || usr.length === 0) {
       return {
         success: false,
         errno: 1001,
@@ -46,26 +46,26 @@ class AdminService extends Service {
     const usr = await this.app.mysql.query('select * from customers where Password = ? && Email = ?', [ md5(Password), Email ]);
     console.log(`[service.admin.signin] DB: ${Email} result: ${JSON.stringify(usr)}`);
     if (!usr || usr.length !== 1) {
-        return {
-            success: false,
-            errno: 1001,
-            msg: 'fail to get result for this info',
-        };
+      return {
+        success: false,
+        errno: 1001,
+        msg: 'fail to get result for this info',
+      };
     }
     const user = usr[0];
     user.Password = null;
     let res = [];
     if (user.Kind === 'Home') {
-        res = await this.app.mysql.query('select * from homecustomer where CustomerID = ?', [user.CustomerID]);
-    } else if(user.Kind === 'Business') {
-        res = await this.app.mysql.query('select * from businesscustomer where CustomerID = ?', [user.CustomerID]);
+      res = await this.app.mysql.query('select * from homecustomer where CustomerID = ?', [ user.CustomerID ]);
+    } else if (user.Kind === 'Business') {
+      res = await this.app.mysql.query('select * from businesscustomer where CustomerID = ?', [ user.CustomerID ]);
     }
 
-    if(!res || res.length!==1) {
-        return {
-            data: { ...user },
-            success: true,
-        }
+    if (!res || res.length !== 1) {
+      return {
+        data: { ...user },
+        success: true,
+      };
     }
 
     return {
@@ -142,21 +142,21 @@ class AdminService extends Service {
 
     const { Name, Street, City, State, ZipCode, Kind, Password, MarriageStatus, Gender, Age, Income, BusinessCategory, GrossAnnualIncome } = usr;
     const res_c = await this.app.mysql.update('customers', {
-        Name: data.Name || Name,
-        Street: data.Street || Street,
-        City: data.City || City,
-        State: data.State || State,
-        ZipCode: data.ZipCode || ZipCode,
-        Kind: data.Kind || Kind,
-        Password: md5(data.Password) || Password,
-        }, {
-        where: {
-            CustomerID: data.CustomerID,
-        },
+      Name: data.Name || Name,
+      Street: data.Street || Street,
+      City: data.City || City,
+      State: data.State || State,
+      ZipCode: data.ZipCode || ZipCode,
+      Kind: data.Kind || Kind,
+      Password: md5(data.Password) || Password,
+    }, {
+      where: {
+        CustomerID: data.CustomerID,
+      },
     });
 
-    if(!res_c) {
-        return {
+    if (!res_c) {
+      return {
         success: false,
         errno: 1003,
         msg: 'unable to find this user',

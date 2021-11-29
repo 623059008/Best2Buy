@@ -22,9 +22,11 @@ class RecordService extends Service {
       sql += ' CustomerID =' + filter.CustomerID + ' and';
     }
     let filterNum = 0;
-    for (const i in filter) {
-      filterNum++;
-    }
+    Object.keys(filter).forEach(key => {
+      if (filter[key]) {
+        filterNum++;
+      }
+    });
     if (filterNum === 0) {
       sql = 'select * from transactions';
     } else {
@@ -277,7 +279,7 @@ class RecordService extends Service {
   }
   async delete(data) {
     const { OrderNumber } = data;
-    const res = await this.app.mysql.query('delete from transactions where OrderNumber = ?', [OrderNumber]);
+    const res = await this.app.mysql.query('delete from transactions where OrderNumber = ?', [ OrderNumber ]);
     if (!res) {
       return {
         success: false,

@@ -66,8 +66,7 @@ class ProductService extends Service {
     inventory.forEach(item => {
       storeList.push(
         this.app.mysql.query(
-          'select * from Store where Store.StoreID = ?',
-          [ item.StoreID ]
+          'select * from Store where Store.StoreID = ?', [ item.StoreID ]
         )
       );
     });
@@ -75,7 +74,7 @@ class ProductService extends Service {
     const stores = await Promise.all(storeList);
     const Stores = [];
     stores.forEach(item => {
-        Stores.push(item[0])
+      Stores.push(item[0]);
     });
 
     product.Stores = Stores;
@@ -89,14 +88,12 @@ class ProductService extends Service {
     Stores.forEach(item => {
       salespersonList.push(
         this.app.mysql.query(
-          'select * from Salesperson where StoreAssigned = ?',
-          [item.StoreID]
+          'select * from Salesperson where StoreAssigned = ?', [ item.StoreID ]
         )
       );
       regionList.push(
         this.app.mysql.query(
-          'select * from Region where RegionID = ?',
-          [item.Region]
+          'select * from Region where RegionID = ?', [ item.Region ]
         )
       );
     });
@@ -108,12 +105,12 @@ class ProductService extends Service {
     const SalesPerson = [];
     const Region = [];
     salesperson.forEach(item => {
-        SalesPerson.push(item[0]);
-    })
+      SalesPerson.push(item[0]);
+    });
 
     region.forEach(item => {
-        Region.push(item[0]);
-    })
+      Region.push(item[0]);
+    });
 
     console.log(
       `[service.product.queryDetail][salesperson] ${JSON.stringify(salesperson)}, \n [region] ${JSON.stringify(region)}`
@@ -141,15 +138,18 @@ class ProductService extends Service {
       sql += ' Price <= ' + filter.MaxPrice + ' and';
     }
     if (filter.SoldOut) {
-      sql += ' InventoryAmount > 0' + ' and';
+      sql += ' InventoryAmount > 0 and';
     }
     if (filter.ProductID) {
       sql += ' ProductID = ' + filter.ProductID + ' and';
     }
     let filterNum = 0;
-    for (const i in filter) {
-      filterNum++;
-    }
+    Object.keys(filter).forEach(key => {
+      if (filter[key]) {
+        filterNum++;
+      }
+    });
+
     if (filterNum === 0) {
       sql = 'select * from products';
     } else {
@@ -245,7 +245,7 @@ class ProductService extends Service {
   async querySAndP(data) {
     const { ProductID } = data;
     const res = await this.app.mysql.query(
-      "select sum(NumberOfProducts),sum(TotalGrossIncome) from transactions where Status = 'Yes' and ProductID = ?", [ ProductID ]
+      "select sum(NumberOfProducts),sum(TotalGrossIncome) from transactions where Status = 'Finished' and ProductID = ?", [ ProductID ]
     );
     if (!res) {
       return {
@@ -265,7 +265,7 @@ class ProductService extends Service {
   // rank product category by sales volumn
   async rankByV(data) {
     const res = await this.app.mysql.query(
-      "select ProductKind,sum(NumberOfProducts) as S from transactions where Status = 'Yes' group by ProductKind order by S desc"
+      "select ProductKind,sum(NumberOfProducts) as S from transactions where Status = 'Finished' group by ProductKind order by S desc"
     );
     if (!res) {
       return {
@@ -285,7 +285,7 @@ class ProductService extends Service {
   // rank product category by profit
   async rankByP(data) {
     const res = await this.app.mysql.query(
-      "select ProductKind,sum(TotalGrossIncome) as P from transactions where Status = 'Yes' group by ProductKind order by P desc"
+      "select ProductKind,sum(TotalGrossIncome) as P from transactions where Status = 'Finished' group by ProductKind order by P desc"
     );
     if (!res) {
       return {
@@ -305,7 +305,7 @@ class ProductService extends Service {
   // rank product by sales volumm associated with business customers
   async rankByVOB(data) {
     const res = await this.app.mysql.query(
-      "select ProductsName from transactions,businesscustomer where Status = 'Yes' and transactions.CustomerID = businesscustomer.CustomerID order by NumberOfProducts desc"
+      "select ProductsName from transactions,businesscustomer where Status = 'Finished' and transactions.CustomerID = businesscustomer.CustomerID order by NumberOfProducts desc"
     );
     if (!res) {
       return {
@@ -326,7 +326,7 @@ class ProductService extends Service {
   async queryBCByP(data) {
     const { ProductID } = data;
     const res = await this.app.mysql.query(
-      "select Name from transactions,businesscustomer where Status = 'Yes' and ProductID = ? and transactions.CustomerID = businesscustomer.CustomerID and NumberOfProducts = (select max(NumberOfProducts) from transactions where ProductID = ? and Status = 'Yes')", [ ProductID, ProductID ]
+      "select Name from transactions,businesscustomer where Status = 'Finished' and ProductID = ? and transactions.CustomerID = businesscustomer.CustomerID and NumberOfProducts = (select max(NumberOfProducts) from transactions where ProductID = ? and Status = 'Yes')", [ ProductID, ProductID ]
     );
     if (!res) {
       return {
