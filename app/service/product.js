@@ -88,12 +88,12 @@ class ProductService extends Service {
     Stores.forEach(item => {
       salespersonList.push(
         this.app.mysql.query(
-          'select * from Salesperson where StoreAssigned = ?', [ item.StoreID ]
+          'select * from salesperson where StoreAssigned = ?', [ item.StoreID ]
         )
       );
       regionList.push(
         this.app.mysql.query(
-          'select * from Region where RegionID = ?', [ item.Region ]
+          'select * from region where RegionID = ?', [ item.Region ]
         )
       );
     });
