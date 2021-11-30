@@ -88,11 +88,11 @@
       <div class="inner-banner-opacity">
         <div class="container">
           <div class="inner-banner-title">
-            <h1>Stores Management Page</h1>
+            <h1>Region Management Page</h1>
             <ul>
               <li><a href="index.html">Home</a></li>
               <li><span><i class="fa fa-arrow-right" aria-hidden="true"></i></span></li>
-              <li><a href="#">Stores Management</a></li>
+              <li><a href="#">Region Management</a></li>
             </ul>
           </div>
           <!-- /.inner-banner-title -->
@@ -107,57 +107,13 @@
         <section class="our-blog-section">
             <div class="container">
                 <div class="theme-title text-center">
-                    <h2>Our <span>Stores</span></h2>
+                    <h2>Our <span>Region</span></h2>
                     <span class="titleanimi"></span>
-                    <a class="manage-btn hvr-float-shadow" type="button" href="store-add.html">Add</a>
+                    <a class="manage-btn hvr-float-shadow" type="button" href="region-add.html">Add</a>
                 </div>
                 <!-- /.theme-title -->
-                <div class="row" id="stores">
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="blog-item">
-                            <div class="blog-img">
-                                <img src="images/blog/store-1.png" alt="image">
-                            </div>
-                            <!-- /.blog-img -->
-                            <div class="blog-title-text">
-                                <h6><b>504</b> <span>Hobart St, Pittsburgh, PA, 15217</span></h6>
-                                <h4><a href="#">Best place for buying beverage</a></h4>
-                            </div>
-                            <!-- /.blog-title-text -->
-                        </div>
-                        <!-- /.blog-item -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="blog-item">
-                            <div class="blog-img">
-                                <img src="images/blog/store-2.png" alt="image">
-                            </div>
-                            <!-- /.blog-img -->
-                            <div class="blog-title-text">
-                                <h6><b>432</b><span>Forbics St,Pittsburgh, PA, 15217</span></h6>
-                                <h4><a href="#">Welcome to here to buy sweets</a></h4>
-                            </div>
-                            <!-- /.blog-title-text -->
-                        </div>
-                        <!-- /.blog-item -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4 col-sm-12 col-xs-12">
-                        <div class="blog-item">
-                            <div class="blog-img">
-                                <img src="images/blog/store-3.png" alt="image">
-                            </div>
-                            <!-- /.blog-img -->
-                            <div class="blog-title-text">
-                                <h6><b>346</b><span>Sample St, Pittsburgh, PA, 15202</span></h6>
-                                <h4><a href="#">Here is the best place to buy clothes</a></h4>
-                            </div>
-                            <!-- /.blog-title-text -->
-                        </div>
-                        <!-- /.blog-item -->
-                    </div>
-                    <!-- /.col -->
+                <div class="row" id="region">
+                    <div>There is no region data</div>
                 </div>
                 <!-- /.row -->
             </div>
@@ -281,15 +237,10 @@
   <script src="js/custom.js"></script>
   <script src="js/main.js"></script>
   <script type="text/javascript">
-    function updateStores(stores) {
-      const storesList = []
-      stores.forEach(item => {
-        const addr = item['Address'].split(' ');
-        let rest = '';
-        for(let i=1; i<addr.length; i++) {
-          rest += addr[i]+ ' ';
-        }
-        storesList.push(`
+    function updateRegion(region) {
+      const regionList = []
+      region.forEach(item => {
+        regionList.push(`
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="blog-item">
                 <div class="blog-img">
@@ -297,25 +248,25 @@
                 </div>
                 <!-- /.blog-img -->
                 <div class="blog-title-text">
-                    <h6><b>${addr[0]}</b> <span>${rest}</span></h6>
-                    <h4>Manager: ${item['Manager']}<br /> Number of Sales Person: ${item['NumberOfSalespersons']}</h4>
-                    <button class='manage-btn hvr-float-shadow' onclick="deleteStore(${item['StoreID']})">Delete</button>
+                    <h6><b>${item["RegionID"]}</b><span>${item["Name"]}</span></h6>
+                    <h4>Manager: ${item['Manager']}</h4>
+                    <button class='manage-btn hvr-float-shadow' onclick="deleteRegion(${item['RegionID']})">Delete</button>
                 </div>
                 <!-- /.blog-title-text -->
             </div>
             <!-- /.blog-item -->
         </div>`);
       });
-      $('#stores').empty();
-      $('#stores').append(storesList.join(''));
+      $('#region').empty();
+      $('#region').append(regionList.join(''));
     }
     $(document).ready(function() {
-      queryAllStores().then(res => {
+      queryAllRegion().then(res => {
           if(!res || !res.data) {
             showModal('Error', 'Services are not available, please try it again', 'Got it');  
             return;
           }
-          updateStores(res.data);
+          updateRegion(res.data);
       });
     });
   </script>

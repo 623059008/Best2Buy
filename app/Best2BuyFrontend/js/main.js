@@ -209,7 +209,7 @@ function addProduct() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="product-manage.html"});
     });
 }
 
@@ -226,7 +226,21 @@ function updateProduct() {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['UpdateSuccess'], infoText['Got']);
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="product-manage.html"});
+    });
+}
+
+function updateRegion() {
+    const url = getUrl('updateRegion');
+    const Name = $('#Name').val();
+    const Manager = $('#Manager').val();
+    const RegionID = $('#RegionID').val();
+    request(url, {RegionID, Name, Manager}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['UpdateFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="region-manage.html"});
     });
 }
 
@@ -324,7 +338,20 @@ function addInventory() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="inventory-manage.html"});
+    });
+}
+
+function updateInventory(StoreID, ProductID) {
+    const url = getUrl('updateInventory');
+    const NumberOfProduct = $(`#NumberOfProduct_${StoreID}_${ProductID}`).val();
+
+    request(url, {StoreID, ProductID, NumberOfProduct}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="inventory-manage.html"});
     });
 }
 
@@ -339,7 +366,7 @@ function addStore() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="store-manage.html"});
     });
 }
 
@@ -356,7 +383,7 @@ function addSalesPerson() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="salesperson-manage.html"});
     });
 }
 
@@ -374,7 +401,7 @@ function updateSalesPerson(id) {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['UpdateSuccess'], infoText['Got']);
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="salesperson-manage.html"});
     });
 }
 
@@ -387,7 +414,7 @@ function addRegion() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got']);
+        showModal('Info', infoText['InsertSuccess'], infoText['Got']), ()=>{location.href="region-manage.html"};
     });
 }
 
@@ -399,7 +426,7 @@ function deleteProduct(ProductID) {
                 showModal('Error', infoText['deleteError'], infoText['Got']);
                 return;
             }
-            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'],()=>{location.href='product-manage.html'});
         });
     }
     showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
@@ -413,7 +440,7 @@ function deleteStore(StoreID) {
                 showModal('Error', infoText['deleteError'], infoText['Got']);
                 return;
             }
-            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'], ()=>{location.href='store-manage.html'});
         });
     }
     showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
@@ -427,11 +454,41 @@ function deleteStuff(SalesPersonID) {
                 showModal('Error', infoText['deleteError'], infoText['Got']);
                 return;
             }
-            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'], ()=>{location.href='salesperson-manage.html'});
         });
     }
     showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
 }
+
+function deleteRegion(RegionID) {
+    const okFunc = ()=>{
+        const url = getUrl('deleteRegion');
+        request(url, {RegionID}).then(res => {
+            if(!res || !res.success) {
+                showModal('Error', infoText['deleteError'], infoText['Got']);
+                return;
+            }
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'], ()=>{location.href='region-manage.html'});
+        });
+    }
+    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
+}
+
+function deleteInventory(StoreID, ProductID) {
+    const okFunc = ()=>{
+        const url = getUrl('deleteInventory');
+        request(url, {StoreID, ProductID}).then(res => {
+            if(!res || !res.success) {
+                showModal('Error', infoText['deleteError'], infoText['Got']);
+                return;
+            }
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'], ()=>{location.href='inventory-manage.html'});
+        });
+    }
+    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
+}
+
+
 
 function deleteCustomer(CustomerID) {
     const okFunc = ()=>{
@@ -587,7 +644,9 @@ $(document).ready(function(){
                     <li><a href="#">Welcome, Admin</a></li>
                     <li><a href="/product-manage.html">Product Management</a></li>
                     <li><a href="/store-manage.html">Store Management</a></li>
+                    <li><a href="/inventory-manage.html">Inventory Management</a></li>
                     <li><a href="/salesperson-manage.html">Staff Management</a></li>
+                    <li><a href="/region-manage.html">Region Management</a></li>
                     <li><a href="#" onclick="logout()">Logout</a></li>
                 </ul>
             `;
