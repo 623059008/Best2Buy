@@ -200,11 +200,11 @@ function buyProduct(ProductID) {
 function addProduct() {
     const url = getUrl('insertProduct');
     const Name = $('#Name').val();
-    const InventoryAmout = $('#InventoryAmout').val();
+    const InventoryAmount = $('#InventoryAmount').val();
     const Price = $('#Price').val();
     const ProductKind = $('#ProductKind').val();
     const ImgUrl = $('#ImgUrl').val();
-    request(url, {Name, InventoryAmout, Price, ProductKind, ImgUrl}).then(res => {
+    request(url, {Name, InventoryAmount, Price, ProductKind, ImgUrl}).then(res => {
        if(!res || !res.success) {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
@@ -216,12 +216,12 @@ function addProduct() {
 function updateProduct() {
     const url = getUrl('updateProduct');
     const Name = $('#Name').val();
-    const InventoryAmout = $('#InventoryAmout').val();
+    const InventoryAmount = $('#InventoryAmount').val();
     const Price = $('#Price').val();
     const ProductKind = $('#ProductKind').val();
     const ImgUrl = $('#ImgUrl').val();
     const ProductID = $('#ProductID').val();
-    request(url, {ProductID, Name, InventoryAmout, Price, ProductKind, ImgUrl}).then(res => {
+    request(url, {ProductID, Name, InventoryAmount, Price, ProductKind, ImgUrl}).then(res => {
        if(!res || !res.success) {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);
             return;
@@ -360,15 +360,16 @@ function addSalesPerson() {
     });
 }
 
-function updateSalesPerson() {
+function updateSalesPerson(id) {
+    id = String(id);
     const url = getUrl('updateSalesPerson');
-    const Name = $('#Name').val();
-    const Address = $('#Address').val();
-    const Email = $('#Email').val();
-    const JobTitle = $('#JobTitle').val();
-    const StoreAssigned = $('#StoreAssigned').val();
+    const Name = $('#Name_'+id).val();
+    const Address = $('#Address_'+id).val();
+    const Email = $('#Email_'+id).val();
+    const JobTitle = $('#JobTitle_'+id).val();
+    const StoreAssigned = $('#StoreAssigned_'+id).val();
     const Salary = $('#Salary').val();
-    request(url, {Name, Address, Email, JobTitle, StoreAssigned, Salary}).then(res => {
+    request(url, {SalesPersonID: id, Name, Address, Email, JobTitle, StoreAssigned, Salary}).then(res => {
        if(!res || !res.success) {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);
             return;

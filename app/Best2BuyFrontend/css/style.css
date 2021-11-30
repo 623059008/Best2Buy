@@ -1475,6 +1475,8 @@ a:hover .button-style.Three,
     max-width: 18em;
     max-height: 18em;
     cursor: grab;
+    max-width: 250px;
+    max-height: 250px;
 }
 
 .Case-Studies-wrapper .Case-Studies-item>.case-item-opacity {
