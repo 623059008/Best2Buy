@@ -41,7 +41,7 @@ class ProductService extends Service {
     const { filter } = data || {};
     const { ProductID } = filter;
     // console.log(
-    //   `[service.product.queryDetail] sql: select * from products P inner join inventory I on P.ProductID = I.ProductID inner join Store S on S.StoreId = I.StoreID inner join Region R on R.RegionID = S.Region inner join salesperson Sales on Sales.StoreAssigned = P.ProductID where P.ProductID = ${ProductID}`
+    //   `[service.product.queryDetail] sql: select * from products P inner join inventory I on P.ProductID = I.ProductID inner join store S on S.StoreId = I.StoreID inner join Region R on R.RegionID = S.Region inner join salesperson Sales on Sales.StoreAssigned = P.ProductID where P.ProductID = ${ProductID}`
     // );
     const res = await this.app.mysql.query(
       'select * from products where ProductID = ?', [ ProductID ]
@@ -66,7 +66,7 @@ class ProductService extends Service {
     inventory.forEach(item => {
       storeList.push(
         this.app.mysql.query(
-          'select * from Store where Store.StoreID = ?', [ item.StoreID ]
+          'select * from store where store.StoreID = ?', [ item.StoreID ]
         )
       );
     });

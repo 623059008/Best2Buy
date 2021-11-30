@@ -471,7 +471,7 @@ function login() {
     }).then(res => {
         console.log('[*] login', res);
         if(!res || !res.success) {
-            if(res.errno === '1001') {
+            if(res.errno === 1001) {
                 showModal('Error', infoText['loginError2'], infoText['Got']);    
                 return;
             }
