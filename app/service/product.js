@@ -173,9 +173,9 @@ class ProductService extends Service {
   }
 
   async insert(data) {
-    const { Name, InventoryAmount, Price, ProductKind } = data;
+    const { Name, InventoryAmount, Price, ProductKind, ImgUrl } = data;
     const res = await this.app.mysql.query(
-      'insert into products (Name, InventoryAmount, Price, ProductKind) value (?,?,?,?)', [ Name, InventoryAmount, Price, ProductKind ]
+      'insert into products (Name, InventoryAmount, Price, ProductKind, ImgUrl) value (?,?,?,?)', [ Name, InventoryAmount, Price, ProductKind, ImgUrl ]
     );
     console.log('[DB][service.product.insert]', res);
     if (!res) {
@@ -213,13 +213,14 @@ class ProductService extends Service {
         msg: 'fail to update',
       };
     }
-    const { Name, InventoryAmount, Price, ProductKind } = product.data;
+    const { Name, InventoryAmount, Price, ProductKind, ImgUrl } = product.data;
     const res = await this.app.mysql.update(
       'products', {
         Name: data.Name || Name,
         InventoryAmount: data.InventoryAmount || InventoryAmount,
         Price: data.Price || Price,
         ProductKind: data.ProductKind || ProductKind,
+        ImgUrl: data.ImgUrl || ImgUrl,
       }, {
         where: {
           ProductID: data.ProductID,

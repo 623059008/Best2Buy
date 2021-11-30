@@ -1471,12 +1471,11 @@ a:hover .button-style.Three,
 }
 
 .Case-Studies-wrapper .Case-Studies-item>img {
-    width: 100%;
     max-width: 18em;
     max-height: 18em;
     cursor: grab;
-    max-width: 250px;
-    max-height: 250px;
+    width: 250px;
+    height: 250px;
 }
 
 .Case-Studies-wrapper .Case-Studies-item>.case-item-opacity {
