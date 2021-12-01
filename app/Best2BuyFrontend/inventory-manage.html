@@ -177,11 +177,6 @@
     function updateInventoryHtml(inventory) {
       const inventoryList = []
       inventory.forEach(item => {
-        const addr = item['Address'].split(' ');
-        let rest = '';
-        for(let i=1; i<addr.length; i++) {
-          rest += addr[i]+ ' ';
-        }
         inventoryList.push(`
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="blog-item Login-form Register-form">
