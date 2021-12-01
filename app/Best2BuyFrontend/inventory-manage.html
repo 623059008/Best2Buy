@@ -189,19 +189,19 @@
                     <input id="NumberOfProduct_${item["StoreID"]}_${item["ProductID"]}" type="text" value="${item["NumberOfProduct"]}">
                     <ul>
                         <li>
-                            <button class="a-comon hvr-float-shadow" type="button" onclick="updateInventory(${item["StoreID"]},${item["ProductID"]})">Update</button>
+                            <button class="manage-btn hvr-float-shadow" type="button" onclick="updateInventory(${item["StoreID"]},${item["ProductID"]})">Update</button>
                         </li>
                         <li>
-                            <button class="manage-btn-yellow hvr-float-shadow" type="button" onclick="deleteInventory(${item['StoreID']}, ${item["ProductID"]})">Delete It</button>
+                            <button class="manage-btn-yellow hvr-float-shadow" type="button" onclick="deleteInventory(${item['StoreID']}, ${item["ProductID"]})">Delete</button>
                         </li>
                     </ul>
                 </form>
             </div>
             <!-- /.blog-item -->
-        </div>s`);
+        </div>`);
       });
       $('#inventory').empty();
-      $('#inventory').append(inventoryList.join(','));
+      $('#inventory').append(inventoryList.join(''));
     }
     $(document).ready(function() {
       queryInventory().then(res => {

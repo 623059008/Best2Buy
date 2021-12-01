@@ -96,14 +96,43 @@ class InventoryService extends Service {
 
   async update(data) {
     const inventory = await this.find(data);
+    const { StoreID, ProductID, NumberOfProduct } = inventory.data;
     if (!inventory || !inventory.success) {
       return {
         success: false,
         errno: 1003,
-        msg: 'fail to update',
+        msg: 'fail to update because there is no such inventory',
       };
     }
-    const { StoreID, ProductID, NumberOfProduct } = inventory.data;
+    const product = await this.app.mysql.query('select * from products where ProductID = ?', [ ProductID ]);
+    if (!product || product.length !== 1) {
+      return {
+        success: false,
+        errno: 1003,
+        msg: 'fail to update because there is no such product',
+      };
+    }
+    const { inventoryAmount } = product[0] || {};
+    const nowInv = await this.app.mysql.query('select * from inventory where ProductID = ?', [ ProductID ]);
+    let cul = 0;
+    if (!nowInv) {
+      return {
+        success: false,
+        errno: 1003,
+        msg: 'fail to update because there is no such inventory',
+      };
+    }
+    nowInv.forEach(item => {
+      cul += parseInt(item.NumberOfProduct, 10);
+    });
+    if ((cul - parseInt(inventory.NumberOfProduct) + parseInt(NumberOfProduct)) > inventoryAmount) {
+      return {
+        success: false,
+        errno: 1003,
+        msg: 'fail to update because inventory amount is over the total inventory amount',
+      };
+    }
+
     const res = await this.app.mysql.update('inventory', {
       StoreID: data.StoreID || StoreID,
       ProductID: data.ProductID || ProductID,
