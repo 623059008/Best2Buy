@@ -446,7 +446,7 @@ function deleteStore(StoreID) {
     showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
 }
 
-function deleteStuff(SalesPersonID) {
+function deleteStaff(SalesPersonID) {
     const okFunc = ()=>{
         const url = getUrl('deleteSalesPerson');
         request(url, {SalesPersonID}).then(res => {
