@@ -128,6 +128,17 @@ function queryProductDetail(filter ={}) {
     });
 }
 
+function queryInventory(filter = {}) {
+    const url = getUrl('queryInventory');
+    return request(url, filter).then(res => {
+        if(!res || !res.success) {
+            showModal('Error', infoText['networkError'], infoText['Got']);
+            return null;
+        }
+        return res;
+    });
+}
+
 function queryAllStores(filter={}) {
     const url = getUrl('queryStore');
     return request(url, filter).then(res => {

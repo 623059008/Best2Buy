@@ -1466,16 +1466,16 @@ a:hover .button-style.Three,
 
 .Case-Studies-wrapper .Case-Studies-item {
     overflow: hidden;
+    margin: auto;
     margin-bottom: 30px;
     position: relative;
+    height: 550px;
 }
 
 .Case-Studies-wrapper .Case-Studies-item>img {
     max-width: 18em;
     max-height: 18em;
     cursor: grab;
-    width: 250px;
-    height: 250px;
 }
 
 .Case-Studies-wrapper .Case-Studies-item>.case-item-opacity {
