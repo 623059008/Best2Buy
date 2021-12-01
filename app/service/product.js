@@ -137,7 +137,7 @@ class ProductService extends Service {
     if (filter.MaxPrice) {
       sql += ' Price <= ' + filter.MaxPrice + ' and';
     }
-    if (filter.SoldOut) {
+    if (filter.SoldOut === true || filter.SoldOut === 'true') {
       sql += ' InventoryAmount > 0 and';
     }
     if (filter.ProductID) {
@@ -217,7 +217,7 @@ class ProductService extends Service {
     const res = await this.app.mysql.update(
       'products', {
         Name: data.Name || Name,
-        InventoryAmount: data.InventoryAmount || InventoryAmount,
+        InventoryAmount: data.InventoryAmount === 0 ? data.InventoryAmount : (data.InventoryAmount || InventoryAmount),
         Price: data.Price || Price,
         ProductKind: data.ProductKind || ProductKind,
         ImgUrl: data.ImgUrl || ImgUrl,

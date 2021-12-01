@@ -66,11 +66,11 @@ class RecordService extends Service {
     const inventory = invRes.data[0] || {};
     const { NumberOfProduct } = inventory;
     // check whether have enough stock to sell
-    if (NumberOfProduct < NumberOfProducts) {
+    if (parseInt(NumberOfProduct) < parseInt(NumberOfProducts)) {
       return {
         success: false,
         errno: 4001,
-        errmsg:
+        msg:
           'We do not have enough stock to sell, please contact with sales person in this store',
       };
     }
@@ -87,7 +87,7 @@ class RecordService extends Service {
       `[service.transaction.insert] product:${JSON.stringify(product)}`
     );
 
-    const TotalGrossIncome = (ProductsPrice * NumberOfProducts).toFixed(2);
+    const TotalGrossIncome = (parseInt(ProductsPrice) * parseInt(NumberOfProducts)).toFixed(2);
 
     const salesPersonRes = await this.service.salesperson.query({
       filter: { SalesPersonID },
@@ -100,8 +100,7 @@ class RecordService extends Service {
     );
 
     const Status = 'Pending';
-    const now = new Date();
-    const nowDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    const nowDate = new Date().toLocaleString();
 
     // Process 1 Create transaction
 
@@ -151,8 +150,9 @@ class RecordService extends Service {
     const invupdate = await this.service.inventory.update({
       StoreID,
       ProductID,
-      NumberOfProduct: NumberOfProduct - NumberOfProducts,
+      NumberOfProduct: parseInt(NumberOfProduct) - parseInt(NumberOfProducts),
     });
+    console.log(`[service.transaction.insert] buy: ${NumberOfProducts}, stock: ${NumberOfProduct}, res: ${JSON.stringify(invupdate)}`);
 
     if (!invupdate || !invupdate.success) {
       // roll back
@@ -165,11 +165,15 @@ class RecordService extends Service {
       };
     }
 
+    const debug = await this.service.inventory.find({ ProductID, StoreID });
+    console.log(`[service.transaction.insert] [Process 2] res: ${JSON.stringify(debug)}`);
+
     // Process 3 Update Product Stock
     const productUpdate = await this.service.product.update({
       ProductID,
-      InventoryAmount: InventoryAmount - NumberOfProducts,
+      InventoryAmount: parseInt(InventoryAmount) - parseInt(NumberOfProducts),
     });
+    console.log(`[service.transaction.insert] buy: ${NumberOfProducts}, stock: ${InventoryAmount}, res: ${JSON.stringify(productUpdate)}`);
 
     if (!productUpdate || !productUpdate.success) {
       // roll back
@@ -186,6 +190,9 @@ class RecordService extends Service {
           'We have placed the order for you, but there is some problems on inventory operations',
       };
     }
+
+    const debug2 = await this.service.product.find({ ProductID });
+    console.log(`[service.transaction.insert] [Process 3] res: ${JSON.stringify(debug2)}`);
 
     // Process 4 Update Transaction Status
     const transactionUpdate = await this.update({

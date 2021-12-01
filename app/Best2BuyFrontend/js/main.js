@@ -196,7 +196,7 @@ function buyProduct(ProductID) {
     const SalesPersonID = parseInt($('#salesperson>option:selected').val(),10);
     
     const data = {ProductID, NumberOfProducts: qty, CustomerID, StoreID, SalesPersonID};
-    console.log('[*] buy', data);
+
     return  request(url, data).then(res => {
         if(!res || !res.success) {
             showModal('Error', infoText['buyError'] + '\n' + res.msg, infoText['Got']);
@@ -220,7 +220,7 @@ function addProduct() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="product-manage.html"});
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="/product-manage.html"});
     });
 }
 
@@ -237,7 +237,7 @@ function updateProduct() {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="product-manage.html"});
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="/product-manage.html"});
     });
 }
 
@@ -251,7 +251,7 @@ function updateRegion() {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="region-manage.html"});
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="/region-manage.html"});
     });
 }
 
@@ -346,10 +346,10 @@ function addInventory() {
 
     request(url, {StoreID, ProductID, NumberOfProduct}).then(res => {
        if(!res || !res.success) {
-            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            showModal('Error', infoText['InsertFail']+'. \n'+res.msg, infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="inventory-manage.html"});
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="/inventory-manage.html"});
     });
 }
 
@@ -359,10 +359,10 @@ function updateInventory(StoreID, ProductID) {
 
     request(url, {StoreID, ProductID, NumberOfProduct}).then(res => {
        if(!res || !res.success) {
-            showModal('Error', infoText['InsertFail'], infoText['Got']);
+            showModal('Error', infoText['InsertFail']+'.\n'+res.msg, infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="inventory-manage.html"});
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="/inventory-manage.html"});
     });
 }
 
@@ -377,7 +377,7 @@ function addStore() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="store-manage.html"});
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="/store-manage.html"});
     });
 }
 
@@ -394,7 +394,7 @@ function addSalesPerson() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="salesperson-manage.html"});
+        showModal('Info', infoText['InsertSuccess'], infoText['Got'], ()=>{location.href="/salesperson-manage.html"});
     });
 }
 
@@ -412,7 +412,7 @@ function updateSalesPerson(id) {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="salesperson-manage.html"});
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="/salesperson-manage.html"});
     });
 }
 
@@ -425,7 +425,7 @@ function addRegion() {
             showModal('Error', infoText['InsertFail'], infoText['Got']);
             return;
         }
-        showModal('Info', infoText['InsertSuccess'], infoText['Got']), ()=>{location.href="region-manage.html"};
+        showModal('Info', infoText['InsertSuccess'], infoText['Got']), () => {location.href="/region-manage.html"};
     });
 }
 
@@ -437,7 +437,7 @@ function deleteProduct(ProductID) {
                 showModal('Error', infoText['deleteError'], infoText['Got']);
                 return;
             }
-            showModal('Info', infoText['deleteSuccess'], infoText['Got'],()=>{location.href='product-manage.html'});
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'],()=>{location.href='/product-manage.html'});
         });
     }
     showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
@@ -451,7 +451,7 @@ function deleteStore(StoreID) {
                 showModal('Error', infoText['deleteError'], infoText['Got']);
                 return;
             }
-            showModal('Info', infoText['deleteSuccess'], infoText['Got'], ()=>{location.href='store-manage.html'});
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'], ()=>{location.href='/store-manage.html'});
         });
     }
     showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});

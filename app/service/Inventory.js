@@ -69,6 +69,23 @@ class InventoryService extends Service {
 
   async insert(data) {
     const { StoreID, ProductID, NumberOfProduct } = data;
+    const product = await this.app.mysql.query('select * from products where ProductID = ?', [ ProductID ]);
+    if (!product || product.length !== 1) {
+      return {
+        success: false,
+        errno: 1003,
+        msg: 'fail to update because there is no such product',
+      };
+    }
+    const { InventoryAmount } = product[0] || {};
+    if (parseInt(NumberOfProduct) > InventoryAmount) {
+      return {
+        success: false,
+        errno: 1003,
+        msg: 'fail to update because the amout is over limit',
+      };
+    }
+
     const res = await this.app.mysql.query('insert into inventory (StoreID, ProductID, NumberOfProduct) value (?,?,?)', [ StoreID, ProductID, NumberOfProduct ]);
     console.log('[DB][service.inventory.insert]', res);
     if (!res) {
@@ -112,8 +129,9 @@ class InventoryService extends Service {
         msg: 'fail to update because there is no such product',
       };
     }
-    const { inventoryAmount } = product[0] || {};
-    const nowInv = await this.app.mysql.query('select * from inventory where ProductID = ?', [ ProductID ]);
+    const { InventoryAmount } = product[0] || {};
+    
+    const nowInv = await this.app.mysql.query('select * from inventory where ProductID = ? and StoreID <> ?', [ ProductID, StoreID ]);
     let cul = 0;
     if (!nowInv) {
       return {
@@ -125,7 +143,8 @@ class InventoryService extends Service {
     nowInv.forEach(item => {
       cul += parseInt(item.NumberOfProduct, 10);
     });
-    if ((cul - parseInt(inventory.NumberOfProduct) + parseInt(NumberOfProduct)) > inventoryAmount) {
+    console.log(`[service.inventory.update] upper:${InventoryAmount}, cul: ${cul}, update: ${data.NumberOfProduct}`);
+    if ((cul + parseInt(data.NumberOfProduct)) > InventoryAmount) {
       return {
         success: false,
         errno: 1003,
@@ -136,7 +155,7 @@ class InventoryService extends Service {
     const res = await this.app.mysql.update('inventory', {
       StoreID: data.StoreID || StoreID,
       ProductID: data.ProductID || ProductID,
-      NumberOfProduct: data.NumberOfProduct || NumberOfProduct,
+      NumberOfProduct: data.NumberOfProduct === 0 ? data.NumberOfProduct : (data.NumberOfProduct || NumberOfProduct),
     }, {
       where: {
         StoreID: data.StoreID,
