@@ -1,12 +1,24 @@
-# mintalBackend
+# Best2buy Backend and Frontend
 
-mintal app backend
+Best2buy Website
+
+powered by eggjs and jquery/html/css3
+
+
+## Demo
+
+Best2buy: [http://storygame.top:7001/index.html]
+
 
 ## QuickStart
 
 <!-- add docs here for user -->
 
 see [egg docs][egg] for more detail.
+
+- Frontend part: /app/Best2BuyFrontend
+- Backend part: /app/controller & /app/service
+- Backend router: /app/router.js
 
 ### mysql connection
 change mysql setting in config/config.default.js
@@ -17,7 +29,7 @@ change mysql setting in config/config.default.js
 ```bash
 $ npm i
 $ npm run dev
-$ open http://localhost:7001/
+$ open http://localhost:7001/index.htmls
 ```
 
 ### Deploy
