@@ -395,7 +395,7 @@ function updateSalesPerson(id) {
     const Email = $('#Email_'+id).val();
     const JobTitle = $('#JobTitle_'+id).val();
     const StoreAssigned = $('#StoreAssigned_'+id).val();
-    const Salary = $('#Salary').val();
+    const Salary = $('#Salary_'+id).val();
     request(url, {SalesPersonID: id, Name, Address, Email, JobTitle, StoreAssigned, Salary}).then(res => {
        if(!res || !res.success) {
             showModal('Error', infoText['UpdateFail'], infoText['Got']);

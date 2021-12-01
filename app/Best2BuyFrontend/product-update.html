@@ -110,6 +110,8 @@
         <div class="Login-form Register-form">
           <h2>Update Product</h2>
           <form action="#">
+            <p>Product ID <span>*</span></p>
+            <input id="ProductID" disabled type="text" />
             <p>Name <span>*</span></p>
             <input id="Name" type="text" />
             <p>InventoryAmount <span>*</span></p>
@@ -261,11 +263,11 @@
                 }
             const data = res.data[0];
             $('#Name').val(data.Name);
-            $('#InventoryAmout').val(data.InventoryAmout);
+            $('#InventoryAmount').val(data.InventoryAmount);
             $('#Price').val(data.Price);
             $('#ProductKind').val(data.ProductKind);
             $('#ImgUrl').val(data.ImgUrl);
-            $('#ProductID').val();
+            $('#ProductID').val(data.ProductID);
 		});
 	});
   </script>

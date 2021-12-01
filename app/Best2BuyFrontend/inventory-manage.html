@@ -174,7 +174,7 @@
   <script src="js/custom.js"></script>
   <script src="js/main.js"></script>
   <script type="text/javascript">
-    function InventoryHtml(inventory) {
+    function updateInventoryHtml(inventory) {
       const inventoryList = []
       inventory.forEach(item => {
         const addr = item['Address'].split(' ');
@@ -203,8 +203,7 @@
                 </form>
             </div>
             <!-- /.blog-item -->
-        </div>
-        `);
+        </div>s`);
       });
       $('#inventory').empty();
       $('#inventory').append(inventoryList.join(','));
