@@ -443,6 +443,22 @@ function deleteProduct(ProductID) {
     showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
 }
 
+function deleteCustomer(CustomerID) {
+    const okFunc = ()=>{
+        const url = getUrl('cancel');
+        request(url, {CustomerID}).then(res => {
+            if(!res || !res.success) {
+                showModal('Error', infoText['deleteError'], infoText['Got']);
+                return;
+            }
+            showModal('Info', infoText['deleteSuccess'], infoText['Got'],()=>{logout();});
+        });
+    }
+    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
+}
+
+
+
 function deleteStore(StoreID) {
     const okFunc = ()=>{
         const url = getUrl('deleteStore');
@@ -500,22 +516,6 @@ function deleteInventory(StoreID, ProductID) {
 }
 
 
-
-function deleteCustomer(CustomerID) {
-    const okFunc = ()=>{
-        const url = getUrl('cancel');
-        request(url, {CustomerID}).then(res => {
-            if(!res || !res.success) {
-                showModal('Error', infoText['deleteError'], infoText['Got']);
-                return;
-            }
-            showModal('Info', infoText['deleteSuccess'], infoText['Got']);
-        });
-    }
-    showModal('Info', infoText['deleteConfirm'], infoText['confirm'], okFunc, infoText['cancel'], ()=>{});
-}
-
-
 function queryProductByKeyword() {
     const value = $("#product-keyword").val();
     const data = {
@@ -547,7 +547,6 @@ function login() {
             showModal('Error', infoText['networkError'], infoText['Got']);
             return;
         }
-        // [TODO_Check] Login Successfully
         Cookies.set('username', res.data.Name);
         Cookies.set('userid', res.data.CustomerID);
         Cookies.set('userrole', res.data.Kind);
