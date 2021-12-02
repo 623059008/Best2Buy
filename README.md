@@ -2,7 +2,7 @@
 
 Best2buy Website
 
-powered by eggjs and jquery/html/css3
+powered by eggjs + mysql and jquery/html/css3
 
 
 ## Demo
@@ -19,6 +19,7 @@ see [egg docs][egg] for more detail.
 - Frontend part: /app/Best2BuyFrontend
 - Backend part: /app/controller & /app/service
 - Backend router: /app/router.js
+- Database: Best2buy.sql
 
 ### mysql connection
 change mysql setting in config/config.default.js
