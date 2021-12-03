@@ -193,6 +193,12 @@ function queryAllTransaction(filter={}) {
 function buyProduct(ProductID) {
     const url = getUrl('insertTransaction');
     const CustomerID = Cookies.get('userid');
+    if(!CustomerID) {
+        showModal('Error', infoText['buyError'], infoText['Got'], ()=>{
+            location.href="/login.html";
+        });
+        return;
+    }
     const qty = parseInt($('#buyqty>option:selected').val());
     const StoreID = parseInt($('#store>option:selected').val(),10) 
     const SalesPersonID = parseInt($('#salesperson>option:selected').val(),10);
