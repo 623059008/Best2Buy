@@ -118,6 +118,8 @@
         <div class="row">
           <label for="soldout"> Sold Out</label>
           <input type="checkbox" id="soldout" name="soldout" value="True">
+          <label for="orderby"> Order By Price</label>
+          <input type="checkbox" id="orderby" name="orderby" value="True">
         </div>
         <div class="row">
           <button class="hvr-float-shadow" id="apply_filter" type="button">Apply</button>
@@ -300,11 +302,13 @@
         const MinPrice = $('#filter_min_price').val();
         const MaxPrice = $('#filter_max_price').val();
         const SoldOut = $('#soldout').is(':checked');
+        const orderby = $('#orderby').is(':checked');
+        // console.log(Keyword, ProductKind, MinPrice, MaxPrice, SoldOut, orderby);
         if (MinPrice !== '' && isNaN(parseInt(MinPrice)) || MaxPrice !== '' && isNaN(parseInt(MaxPrice))) {
           showModal('Info', 'Must input valid price', 'Got it');
           return;
         }
-        if (MinPrice !== '' || Keyword !== '' || MaxPrice !== '' || ProductKind !== '') {
+        if (MinPrice !== '' || Keyword !== '' || MaxPrice !== '' || ProductKind !== '' || SoldOut!==false || orderby !==false) {
           queryAllProduct({
             Keyword,
             MaxPrice,
@@ -316,6 +320,9 @@
               showModal('Error', 'Services are not available, please try it again', 'Got it');
               return;
             }
+            if(orderby) {
+              res.data = res.data.sort((a,b)=>(a.Price-b.Price));
+            }
             updateProducts(res.data);
           });
         }
@@ -326,6 +333,7 @@
         $('#filter_min_price').val('');
         $('#filter_max_price').val('');
         $('#soldout').attr('checked', false);
+        $('#orderby').attr('checked', false);
         queryAllProduct().then(res => {
           if (!res || !res.data) {
             showModal('Error', 'Services are not available, please try it again', 'Got it');

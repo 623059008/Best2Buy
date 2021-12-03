@@ -104,61 +104,61 @@
     <!-- /.them-inner-banner -->
 
     <!-- Product Rank _________________________________ -->
-    <section class="Services-Packages">
-        <div class="container">
-            <div class="theme-title text-center">
-                <h2>Our most <span>popular</span> products</h2>
-                <span class="titleanimi"></span>
+        <section class="Services-Packages">
+            <div class="container">
+                <div class="theme-title text-center">
+                    <h2>Our most <span>popular</span> products categories by profits</h2>
+                    <span class="titleanimi"></span>
+                </div>
+                <!-- /.theme-title -->
+                <div class="services-item-wrapper" id="productRank">
+                    <!-- / #services-packages-slider -->
+                    <div class="rankContent">There is no data now</div>
+                    <a href="/products.html" class="a-comon">Explore More <span class="button-style One"></span></a>
+                </div>
+                <!-- /.services-item-wrapper -->
             </div>
-            <!-- /.theme-title -->
-            <div class="services-item-wrapper" id="productRank">
-                <!-- / #services-packages-slider -->
-                <div class="rankContent">There is no data now</div>
-                <a href="/products.html" class="a-comon">Explore More <span class="button-style One"></span></a>
-            </div>
-            <!-- /.services-item-wrapper -->
-        </div>
-        <!-- /.container -->
-    </section>
-    <!-- /.Product Rank -->
+            <!-- /.container -->
+        </section>
+        <!-- /.Product Rank -->
 
-    <!-- Category Rank _________________________________ -->
-    <section class="Services-Packages">
-        <div class="container">
-            <div class="theme-title text-center">
-                <h2>Our most <span>popular</span> product categories</h2>
-                <span class="titleanimi"></span>
+        <!-- Category Rank _________________________________ -->
+        <section class="Services-Packages">
+            <div class="container">
+                <div class="theme-title text-center">
+                    <h2>Our most <span>popular</span> product categories by volumes</h2>
+                    <span class="titleanimi"></span>
+                </div>
+                <!-- /.theme-title -->
+                <div class="services-item-wrapper" id="kindRank">
+                    <!-- / #services-packages-slider -->
+                    <div class="rankContent">There is no data now</div>
+                    <a href="/products.html" class="a-comon">Explore More <span class="button-style One"></span></a>
+                </div>
+                <!-- /.services-item-wrapper -->
             </div>
-            <!-- /.theme-title -->
-            <div class="services-item-wrapper" id="kindRank">
-                <!-- / #services-packages-slider -->
-                <div class="rankContent">There is no data now</div>
-                <a href="/products.html" class="a-comon">Explore More <span class="button-style One"></span></a>
-            </div>
-            <!-- /.services-item-wrapper -->
-        </div>
-        <!-- /.container -->
-    </section>
-    <!-- /.Category Rank -->
+            <!-- /.container -->
+        </section>
+        <!-- /.Category Rank -->
 
-    <!-- Region Rank _________________________________ -->
-    <section class="Services-Packages">
-        <div class="container">
-            <div class="theme-title text-center">
-                <h2>Our most <span>popular</span> product categories</h2>
-                <span class="titleanimi"></span>
+        <!-- Region Rank _________________________________ -->
+        <section class="Services-Packages">
+            <div class="container">
+                <div class="theme-title text-center">
+                    <h2>Our most <span>profitable</span> regions</h2>
+                    <span class="titleanimi"></span>
+                </div>
+                <!-- /.theme-title -->
+                <div class="services-item-wrapper" id="regionRank">
+                    <!-- / #services-packages-slider -->
+                    <div class="rankContent">There is no data now</div>
+                    <a href="/regions.html" class="a-comon">Explore More <span class="button-style One"></span></a>
+                </div>
+                <!-- /.services-item-wrapper -->
             </div>
-            <!-- /.theme-title -->
-            <div class="services-item-wrapper" id="regionRank">
-                <!-- / #services-packages-slider -->
-                <div class="rankContent">There is no data now</div>
-                <a href="/regions.html" class="a-comon">Explore More <span class="button-style One"></span></a>
-            </div>
-            <!-- /.services-item-wrapper -->
-        </div>
-        <!-- /.container -->
-    </section>
-    <!-- /.Region Rank -->
+            <!-- /.container -->
+        </section>
+        <!-- /.Region Rank -->
 
     <!-- Footer ____________________________ -->
     <footer>
@@ -216,13 +216,14 @@
   <script type='text/javascript'>
         function updateKindRank(kind) {
             const rankItemList = [];
+            const imgList = ['https://m.media-amazon.com/images/I/61DvQT-4r6S._AC_SL1500_.jpg', 'https://m.media-amazon.com/images/I/61O9tWR6WDS._SL1475_.jpg', 'https://m.media-amazon.com/images/I/61+wn86fYMS._AC_UL640_FMwebp_QL65_.jpg']
             for(let i=1;i<Math.min(4,kind.length+1); i++) {
                 const rankItem  = `
                     <div class="services-item col-md-4">
                         <div class="services-img">
-                            <img src="https://m.media-amazon.com/images/I/61+wn86fYMS._AC_UL640_FMwebp_QL65_.jpg" alt="">
-                            <div class="">
-                                <img src="" alt="">
+                            <img src="${imgList[i-1]}" alt="">
+                            <div>
+                                <img src="/images/home/hover-1.png" alt="">
                                 <h5><a href="#">${kind[i-1]["ProductKind"]}</a></h5>
                             </div>
                         </div>
@@ -240,19 +241,20 @@
         }
         function updateProductRank(product) {
             const rankItemList = [];
+            const imgList = ['https://m.media-amazon.com/images/I/71Jp27bTQoL._AC_SL1500_.jpg', 'https://m.media-amazon.com/images/I/61+wn86fYMS._AC_UL640_FMwebp_QL65_.jpg', 'https://m.media-amazon.com/images/I/61DvQT-4r6S._AC_SL1500_.jpg']
             for(let i=1;i<Math.min(4,product.length+1);i++) {
                 const rankItem  = `
                     <div class="services-item col-md-4">
                         <div class="services-img">
-                            <img src="https://m.media-amazon.com/images/I/71knjo3Uz4L._AC_UY436_FMwebp_QL65_.jpg" alt="">
-                            <div class="">
-                                <img src="" alt="">
+                            <img src="${imgList[i-1]}" alt="">
+                            <div>
+                                <img src="/images/home/hover-1.png" alt="">
                                 <h5><a href="#">${product[i-1]["ProductKind"]}</a></h5>
                             </div>
                         </div>
                         <div class="services-text text-center">
                             <h6>0${i}</h6>
-                            <h5>${product[i-1]["ProductKind"]}, Gross: ${product[i-1]["P"]}</h5>
+                            <h5>${product[i-1]["ProductKind"]}, Gross: ${product[i-1]["P"]}$</h5>
                         </div>
                     </div>
                 `;
@@ -269,13 +271,13 @@
                         <div class="services-img">
                             <img src="images/blog/store-${i}.png" alt="">
                             <div class="">
-                                <img src="" alt="">
+                                <img src="/images/home/hover-1.png" alt="">
                                 <h5><a href="#">${data[i-1]["Name"]}</a></h5>
                             </div>
                         </div>
                         <div class="services-text text-center">
                             <h6>0${i}</h6>
-                            <h5>${data[i-1]["Name"]}, Profit: ${data[i-1]["sum(TotalGrossIncome)"]}</h5>
+                            <h5>${data[i-1]["Name"]}, Profit: ${data[i-1]["sum(TotalGrossIncome)"]}$</h5>
                         </div>
                     </div>
                 `;

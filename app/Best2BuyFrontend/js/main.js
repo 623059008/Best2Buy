@@ -11,6 +11,8 @@ const infoText = {
   'loginError2': 'Fail to login by this information',
   'registryError': 'Required fields must be completed',
   'registryError2': 'Repeat password is not identical with password',
+  'registryErrorEmail': 'The email should be legal',
+  'registryErrorPhone': 'The phone should be legal',
   'registrySuccess': 'Your Account has been created successfully',
   'buySuccess': 'Order has been placed successfully!',
   'InsertFail': 'Unable to insert, please try it again',
@@ -238,6 +240,21 @@ function updateProduct() {
             return;
         }
         showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="/product-manage.html"});
+    });
+}
+
+function updateStore() {
+    const url = getUrl('updateStore');
+    const StoreID = $('#StoreID').val();
+    const Address = $('#Address').val();
+    const Manager = $('#Manager').val();
+    const NumberOfSalespersons = $('#NumberOfSalespersons').val();
+    request(url, {StoreID, Address, Manager, NumberOfSalespersons}).then(res => {
+       if(!res || !res.success) {
+            showModal('Error', infoText['UpdateFail'], infoText['Got']);
+            return;
+        }
+        showModal('Info', infoText['UpdateSuccess'], infoText['Got'], ()=>{location.href="/store-manage.html"});
     });
 }
 
@@ -534,6 +551,11 @@ function login() {
         showModal('Info', infoText['loginError'], infoText['Got']);
         return;
     }
+    const reg = /^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/;
+    if (!reg.test(name)) {
+        showModal('Info', infoText['registryErrorEmail'], infoText['Got']);
+　　　　 return false;
+　　 }
     request(url, {
         Email: name,
         Password: password,
@@ -579,6 +601,16 @@ function reigster() {
     if(!Email || !Tel || !name || !password || !repassword || !street || !city || !state || !zipcode) {
         showModal('Info', infoText['registryError'], infoText['Got']);
         return;
+    }
+    const reg = /^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/;
+    if (!reg.test(Email)) {
+        showModal('Info', infoText['registryErrorEmail'], infoText['Got']);
+　　　　 return false;
+　　 }
+    const phoneReg = /^[0-9]{3}[0-9]{3}[0-9]{4}$/;
+    if(!phoneReg.test(Tel)) {
+        showModal('Info', infoText['registryErrorPhone'], infoText['Got']);
+        return false
     }
     if(Kind==='Home' && (!Gender || !Age || !MarriageStatus || !Income)) {
         showModal('Info', infoText['registryError'], infoText['Got']);
