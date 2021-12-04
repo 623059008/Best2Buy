@@ -11,8 +11,8 @@ const infoText = {
   'loginError2': 'Fail to login by this information',
   'registryError': 'Required fields must be completed',
   'registryError2': 'Repeat password is not identical with password',
-  'registryErrorEmail': 'The email should be legal',
-  'registryErrorPhone': 'The phone should be legal',
+  'registryErrorEmail': 'The email should be valid',
+  'registryErrorPhone': 'The phone should be valid',
   'registrySuccess': 'Your Account has been created successfully',
   'buySuccess': 'Order has been placed successfully!',
   'InsertFail': 'Unable to insert, please try it again',
@@ -705,7 +705,7 @@ $(document).ready(function(){
     if(role !== 'Administrator') {
         const url = location.href.split('//')[1];
         const pageName = url.split('/')[1].split('.')[0];
-        authList =  ['product-manage', 'store-manage', 'salesperson-manage']
+        authList =  ['product-manage', 'store-manage', 'salesperson-manage', 'region-manage']
         if(authList.includes(pageName)) {
             location.href = 'index.html';
         }
